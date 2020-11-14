@@ -1,35 +1,28 @@
 package Dominio;
 
-import java.util.*;
-
 public class Pase {
 
 	private int idPase;
 	private String nombrePase;
-	ArrayList<Turno> nTurnos;
 
-	public int getIdPase() {
-		return this.idPase;
-	}
+        public Pase (int idPase, String nombrePase) {
+            this.idPase = idPase;
+            this.nombrePase = nombrePase;
+        }
+        
+        public int getIdPase() {
+            return idPase;
+        }
 
-	/**
-	 * 
-	 * @param idPase
-	 */
-	public void setIdPase(int idPase) {
-		this.idPase = idPase;
-	}
+        public void setIdPase(int idPase) {
+            this.idPase = idPase;
+        }
 
-	public String getNombrePase() {
-		return this.nombrePase;
-	}
+        public String getNombrePase() {
+            return nombrePase;
+        }
 
-	/**
-	 * 
-	 * @param nombrePase
-	 */
-	public void setNombrePase(String nombrePase) {
-		this.nombrePase = nombrePase;
-	}
-
+        public void setNombrePase(String nombrePase) {
+            this.nombrePase = nombrePase;
+        }
 }

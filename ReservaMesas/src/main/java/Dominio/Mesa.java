@@ -1,35 +1,51 @@
 package Dominio;
 
-import java.util.*;
-
 public class Mesa {
 
 	private int idMesa;
 	private String nombreMesa;
-	ArrayList<Servicio> nServicios;
+        private Restaurante nRestaurante;
+        private Servicio servicioActivo;
 
-	public int getIdMesa() {
-		return this.idMesa;
-	}
+        public Mesa(int idMesa, String nombreMesa) {
+            this.idMesa = idMesa;
+            this.nombreMesa = nombreMesa;
+        }
 
-	/**
-	 * 
-	 * @param idMesa
-	 */
-	public void setIdMesa(int idMesa) {
-		this.idMesa = idMesa;
-	}
+        public Mesa(int idMesa, String nombreMesa, Restaurante nRestaurante) {
+            this (idMesa, nombreMesa);
+            this.nRestaurante = nRestaurante;
+        }
+        
+        public int getIdMesa() {
+            return idMesa;
+        }
 
-	public String getNombreMesa() {
-		return this.nombreMesa;
-	}
+        public void setIdMesa(int idMesa) {
+            this.idMesa = idMesa;
+        }
 
-	/**
-	 * 
-	 * @param nombreMesa
-	 */
-	public void setNombreMesa(String nombreMesa) {
-		this.nombreMesa = nombreMesa;
-	}
+        public String getNombreMesa() {
+            return nombreMesa;
+        }
 
+        public void setNombreMesa(String nombreMesa) {
+            this.nombreMesa = nombreMesa;
+        }
+
+        public Restaurante getnRestaurante() {
+            return nRestaurante;
+        }
+
+        public void setnRestaurante(Restaurante nRestaurante) {
+            this.nRestaurante = nRestaurante;
+        } 
+
+        public Servicio getServicioActivo() {
+            return servicioActivo;
+        }
+
+        public void setServicioActivo(Servicio servicioActivo) {
+            this.servicioActivo = servicioActivo;
+        }     
 }

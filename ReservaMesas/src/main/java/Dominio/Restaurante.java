@@ -1,48 +1,48 @@
 package Dominio;
 
-import java.util.*;
-
 public class Restaurante {
-
+        
+        private int id;
 	private String nombre;
 	private String direccion;
 	private String ciudad;
-	ArrayList<Empleado> nEmpleados;
 
-	public String getNombre() {
-		return this.nombre;
-	}
+        public Restaurante (int id, String nombre, String direccion, String ciudad) {
+            this.id = id;
+            this.nombre = nombre;
+            this.direccion = direccion;
+            this.ciudad = ciudad;
+        }
+        
+        public int getId() {
+            return id;
+        }
 
-	/**
-	 * 
-	 * @param nombre
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+        public void setId(int id) {
+            this.id = id;
+        }
 
-	public String getDireccion() {
-		return this.direccion;
-	}
+        public String getNombre() {
+            return nombre;
+        }
 
-	/**
-	 * 
-	 * @param direccion
-	 */
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
 
-	public String getCiudad() {
-		return this.ciudad;
-	}
+        public String getDireccion() {
+            return direccion;
+        }
 
-	/**
-	 * 
-	 * @param ciudad
-	 */
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
-	}
+        public void setDireccion(String direccion) {
+            this.direccion = direccion;
+        }
 
+        public String getCiudad() {
+            return ciudad;
+        }
+
+        public void setCiudad(String ciudad) {
+            this.ciudad = ciudad;
+        }
 }

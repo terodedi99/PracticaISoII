@@ -4,79 +4,105 @@ import java.util.Date;
 
 public class Servicio {
 
+        public enum Estado {
+            LIBRE,
+            RESERVADA,
+            OCUPADA,
+            PIDIENDO,
+            EN_ESPERA_DE_COMIDA,
+            SERVIDOS,
+            ESPERANDO_LA_CUENTA,
+            PAGANDO,
+            EN_PREPARACION,
+            FINALIZADA
+        }
+    
 	private int idServicio;
 	private Date fecha;
+        private Turno nTurno;
+        private Mesa nMesa;
 	private int num_comensales;
+        private String comentarios;
 	private Estado estado;
-	private String comentarios;
-	Turno nTurno;
-	Empleado nEmpleado;
-	Mesa nMesa;
+	
+	private Empleado nEmpleado;
 
-	public int getIdServicio() {
-		return this.idServicio;
-	}
+        public Servicio(int idServicio, Date fecha, Turno nTurno, Mesa nMesa, int num_comensales, String comentarios, Estado estado) {
+            this.idServicio = idServicio;
+            this.fecha = fecha;
+            this.nTurno = nTurno;
+            this.nMesa = nMesa;
+            this.num_comensales = num_comensales;
+            this.comentarios = comentarios;
+            this.estado = estado;
+        }
 
-	/**
-	 * 
-	 * @param idServicio
-	 */
-	public void setIdServicio(int idServicio) {
-		this.idServicio = idServicio;
-	}
+        public int getIdServicio() {
+            return idServicio;
+        }
 
-	public Date getFecha() {
-		return this.fecha;
-	}
+        public void setIdServicio(int idServicio) {
+            this.idServicio = idServicio;
+        }
 
-	/**
-	 * 
-	 * @param fecha
-	 */
-	public Date setFecha(Date fecha) {
-		// TODO - implement Servicio.setFecha
-		throw new UnsupportedOperationException();
-	}
+        public Date getFecha() {
+            return fecha;
+        }
 
-	public int getNum_comensales() {
-		return this.num_comensales;
-	}
+        public void setFecha(Date fecha) {
+            this.fecha = fecha;
+        }
 
-	/**
-	 * 
-	 * @param num_comensales
-	 */
-	public void setNum_comensales(int num_comensales) {
-		this.num_comensales = num_comensales;
-	}
+        public Turno getnTurno() {
+            return nTurno;
+        }
 
-	public Estado getEstado() {
-		return this.estado;
-	}
+        public void setnTurno(Turno nTurno) {
+            this.nTurno = nTurno;
+        }
 
-	/**
-	 * 
-	 * @param estado
-	 */
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
+        public Mesa getnMesa() {
+            return nMesa;
+        }
 
-	public String getComentarios() {
-		return this.comentarios;
-	}
+        public void setnMesa(Mesa nMesa) {
+            this.nMesa = nMesa;
+        }
 
-	/**
-	 * 
-	 * @param comentarios
-	 */
-	public void setComentarios(String comentarios) {
-		this.comentarios = comentarios;
-	}
+        public int getNum_comensales() {
+            return num_comensales;
+        }
 
+        public void setNum_comensales(int num_comensales) {
+            this.num_comensales = num_comensales;
+        }
+
+        public String getComentarios() {
+            return comentarios;
+        }
+
+        public void setComentarios(String comentarios) {
+            this.comentarios = comentarios;
+        }
+
+        public Estado getEstado() {
+            return estado;
+        }
+
+        public void setEstado(Estado estado) {
+            this.estado = estado;
+        }
+
+        public Empleado getnEmpleado() {
+            return nEmpleado;
+        }
+
+        public void setnEmpleado(Empleado nEmpleado) {
+            this.nEmpleado = nEmpleado;
+        }
+	
 	public void update() {
 		// TODO - implement Servicio.update
 		throw new UnsupportedOperationException();
 	}
-
 }
