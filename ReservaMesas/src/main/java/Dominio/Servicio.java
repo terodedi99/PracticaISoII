@@ -1,6 +1,10 @@
 package Dominio;
 
+import Persistencia.Agente;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Servicio {
 
@@ -27,6 +31,15 @@ public class Servicio {
 	
 	private Empleado nEmpleado;
 
+        public Servicio (int idServicio, Date fecha, Turno nTurno, Mesa nMesa, Estado estado) {
+            this.idServicio = idServicio;
+            this.fecha = fecha;
+            this.nTurno = nTurno;
+            this.nMesa = nMesa;
+            this.estado = estado;
+        }
+        
+        
         public Servicio(int idServicio, Date fecha, Turno nTurno, Mesa nMesa, int num_comensales, String comentarios, Estado estado) {
             this.idServicio = idServicio;
             this.fecha = fecha;
@@ -105,4 +118,85 @@ public class Servicio {
 		// TODO - implement Servicio.update
 		throw new UnsupportedOperationException();
 	}
+        
+        public static ArrayList<Servicio> readServicios(Date fecha, Empleado empleado) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            ArrayList<Servicio> listaServicios = new ArrayList<>();
+            
+            try {
+                String sql = "SELECT\n" +
+                    "    \"A3\".\"ID_SERVICIO\"      \"ID_SERVICIO\",\n" +
+                    "    to_char(\"A3\".\"FECHA_SERVICIO\", 'dd/MM/yyyy') \"FECHA_SERVICIO\",\n" +
+                    "    \"A3\".\"ESTADO\"           \"ESTADO\",\n" +
+                    "    \"A3\".\"ID_TURNO\"         \"ID_TURNO\",\n" +
+                    "    \"A2\".\"NOMBRE_TURNO\"     \"NOMBRE_TURNO\",\n" +
+                    "    \"A3\".\"ID_MESA\"          \"ID_MESA\",\n" +
+                    "    \"A1\".\"NOMBRE_MESA\"      \"NOMBRE_MESA\"\n" +
+                    "FROM\n" +
+                    "    \"ISO2\".\"SERVICIOS\"   \"A3\",\n" +
+                    "    \"ISO2\".\"TURNOS\"      \"A2\",\n" +
+                    "    \"ISO2\".\"MESAS\"       \"A1\"\n" +
+                    "WHERE\n" +
+                    "    \"A1\".\"ID_RESTAURANTE\" = " + empleado.getnRestaurante().getId() + " \n" +
+                    "    AND \"A3\".\"FECHA_SERVICIO\" = '" + formatter.format(fecha) +"' \n" +
+                    "    AND \"A3\".\"ID_MESA\" = \"A1\".\"ID_MESA\"\n" +
+                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"";
+                
+                Agente a = Agente.getAgente();
+                ArrayList result = a.select(sql);
+                
+                
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap row = (HashMap) result.get(i);   
+                    Servicio s = new Servicio(Integer.parseInt(row.get("ID_SERVICIO").toString()), formatter.parse(row.get("FECHA_SERVICIO").toString()), new Turno (Integer.parseInt(row.get("ID_TURNO").toString()),row.get("NOMBRE_TURNO").toString()), new Mesa (Integer.parseInt(row.get("ID_MESA").toString()),row.get("NOMBRE_MESA").toString()), Estado.valueOf(row.get("ESTADO").toString()));
+                    
+                    listaServicios.add(s);
+                }    
+            } catch (Exception ex) {
+                System.out.println(ex); 
+            }
+            
+            return listaServicios;
+        }
+        
+        public static ArrayList<Servicio> readServicios(Date fecha, Empleado empleado, Pase pase) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            ArrayList<Servicio> listaServicios = new ArrayList<>();
+            
+            try {
+                String sql = "SELECT\n" +
+                    "    \"A3\".\"ID_SERVICIO\"      \"ID_SERVICIO\",\n" +
+                    "    to_char(\"A3\".\"FECHA_SERVICIO\", 'dd/MM/yyyy') \"FECHA_SERVICIO\",\n" +
+                    "    \"A3\".\"ESTADO\"           \"ESTADO\",\n" +
+                    "    \"A3\".\"ID_TURNO\"         \"ID_TURNO\",\n" +
+                    "    \"A2\".\"NOMBRE_TURNO\"     \"NOMBRE_TURNO\",\n" +
+                    "    \"A3\".\"ID_MESA\"          \"ID_MESA\",\n" +
+                    "    \"A1\".\"NOMBRE_MESA\"      \"NOMBRE_MESA\"\n" +
+                    "FROM\n" +
+                    "    \"ISO2\".\"SERVICIOS\"   \"A3\",\n" +
+                    "    \"ISO2\".\"TURNOS\"      \"A2\",\n" +
+                    "    \"ISO2\".\"MESAS\"       \"A1\"\n" +
+                    "WHERE\n" +
+                    "    \"A1\".\"ID_RESTAURANTE\" = " + empleado.getnRestaurante().getId() + " \n" +
+                    "    AND \"A3\".\"FECHA_SERVICIO\" = '" + formatter.format(fecha) + "' \n" +
+                    "    AND \"A2\".\"ID_PASE\" = " + pase.getIdPase() + " \n" +
+                    "    AND \"A3\".\"ID_MESA\" = \"A1\".\"ID_MESA\"\n" +
+                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"";
+                
+                Agente a = Agente.getAgente();
+                ArrayList result = a.select(sql);
+                
+                
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap row = (HashMap) result.get(i);   
+                    Servicio s = new Servicio(Integer.parseInt(row.get("ID_SERVICIO").toString()), formatter.parse(row.get("FECHA_SERVICIO").toString()), new Turno (Integer.parseInt(row.get("ID_TURNO").toString()),row.get("NOMBRE_TURNO").toString()), new Mesa (Integer.parseInt(row.get("ID_MESA").toString()),row.get("NOMBRE_MESA").toString()), Estado.valueOf(row.get("ESTADO").toString()));
+                    
+                    listaServicios.add(s);
+                }    
+            } catch (Exception ex) {
+                System.out.println(ex); 
+            }
+            
+            return listaServicios;
+        }
 }

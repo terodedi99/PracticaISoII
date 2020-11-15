@@ -48,4 +48,9 @@ public class Mesa {
         public void setServicioActivo(Servicio servicioActivo) {
             this.servicioActivo = servicioActivo;
         }     
+
+        @Override
+        public String toString() {
+            return this.nombreMesa;
+        }
 }

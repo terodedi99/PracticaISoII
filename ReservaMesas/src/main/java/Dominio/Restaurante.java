@@ -6,9 +6,13 @@ public class Restaurante {
 	private String nombre;
 	private String direccion;
 	private String ciudad;
-
-        public Restaurante (int id, String nombre, String direccion, String ciudad) {
+        
+        public Restaurante (int id) {
             this.id = id;
+        }
+        
+        public Restaurante (int id, String nombre, String direccion, String ciudad) {
+            this (id);
             this.nombre = nombre;
             this.direccion = direccion;
             this.ciudad = ciudad;

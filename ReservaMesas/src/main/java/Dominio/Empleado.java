@@ -4,13 +4,14 @@ public class Empleado {
         
         public enum Rol {
             CAMARERO,
-            JEFE_SALA,
+            JEFE_DE_SALA,
             CAMARERO_BARRA,
             COCINERO,
             ALMACEN,
             DIRECTIVO
         }
         
+        private int idEmpleado;
 	private String DNI;
 	private String nombre;
 	private String apellidos;
@@ -18,17 +19,26 @@ public class Empleado {
 	private Rol tipoEmpleado;
 	private Restaurante nRestaurante;
 
-        public Empleado (String DNI, String nombre, String apellidos) {
+        public Empleado (int id, String DNI, String nombre, String apellidos) {
+            this.idEmpleado = id;
             this.DNI = DNI;
             this.nombre = nombre;
             this.apellidos = apellidos;
         }
         
-        public Empleado (String DNI, String nombre, String apellidos, long tfno_contacto, Rol tipoEmpleado, Restaurante nRestaurante) {
-            this(DNI, nombre, apellidos);
+        public Empleado (int id, String DNI, String nombre, String apellidos, long tfno_contacto, Rol tipoEmpleado, Restaurante nRestaurante) {
+            this(id, DNI, nombre, apellidos);
             this.tfno_contacto = tfno_contacto;
             this.tipoEmpleado = tipoEmpleado;
             this.nRestaurante = nRestaurante;
+        }
+
+        public int getIdEmpleado() {
+            return idEmpleado;
+        }
+
+        public void setIdEmpleado(int idEmpleado) {
+            this.idEmpleado = idEmpleado;
         }
         
         public String getDNI() {

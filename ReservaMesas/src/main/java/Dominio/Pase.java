@@ -25,4 +25,9 @@ public class Pase {
         public void setNombrePase(String nombrePase) {
             this.nombrePase = nombrePase;
         }
+
+        @Override
+        public String toString() {
+            return this.nombrePase;
+        }    
 }

@@ -39,4 +39,9 @@ public class Turno {
         public void setnPase(Pase nPase) {
             this.nPase = nPase;
         }
+
+        @Override
+        public String toString() {
+            return this.nombreTurno;
+        }  
 }
