@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 /**
@@ -48,6 +49,7 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         
         //Se inicializa el JDateChooser
         this.seleccionFecha.setDate(new Date());
+        this.seleccionFecha.setMinSelectableDate(new Date());
         JTextFieldDateEditor editor = (JTextFieldDateEditor) this.seleccionFecha.getDateEditor();
         editor.setEditable(false);
         
@@ -91,7 +93,7 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         estado.setMinWidth(80);
     }
     
-    private void cargarDatos() {
+    public void cargarDatos() {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -112,7 +114,7 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         }
     }
     
-    private void cargarDatos (Pase pase) {    
+    public void cargarDatos (Pase pase) {    
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -256,11 +258,34 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReservarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarMesaActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = tablaServicios.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("LIBRE")) {
+                this.setVisible(false);
+                IU_Reservar_Mesa reservarMesa = new IU_Reservar_Mesa();
+                reservarMesa.setFormGestionReservas(this);
+                reservarMesa.setVisible(true);
+                reservarMesa.setDatosServicio(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString());
+            } else {
+                JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO DEBE SER LIBRE PARA PODER SER RESERVADO", "NO SE PUEDE RESERVAR ESA MESA", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "NO SE PUEDE RESERVAR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnReservarMesaActionPerformed
 
     private void btnCancelarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarReservaActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = tablaServicios.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("RESERVADA")) {
+                GestorServicio.cancelarServicio(Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()));
+                cargarDatos();
+            } else {
+                JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO DEBE SER RESERVADA PARA PODER SER CANCELADO", "NO SE PUEDE CANCELAR ESA MESA", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "NO SE PUEDE CANCELAR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnCancelarReservaActionPerformed
 
     private void btnAsignarCamareroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamareroActionPerformed

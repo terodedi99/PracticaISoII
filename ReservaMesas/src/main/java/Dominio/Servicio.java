@@ -30,6 +30,12 @@ public class Servicio {
 	private Estado estado;
 	
 	private Empleado nEmpleado;
+        
+        public Servicio (int idServicio, int num_comensales, String comentarios) {
+            this.idServicio = idServicio;
+            this.num_comensales = num_comensales;
+            this.comentarios = comentarios;
+        }
 
         public Servicio (int idServicio, Date fecha, Turno nTurno, Mesa nMesa, Estado estado) {
             this.idServicio = idServicio;
@@ -114,9 +120,19 @@ public class Servicio {
             this.nEmpleado = nEmpleado;
         }
 	
-	public void update() {
-		// TODO - implement Servicio.update
-		throw new UnsupportedOperationException();
+	public boolean update() {
+            boolean exito = true;
+            
+            try {
+                String sql = "UPDATE SERVICIOS SET COMENTARIOS='" + this.comentarios + "', NUM_COMENSALES="+this.num_comensales+", ESTADO='" + this.estado.toString() + "' WHERE ID_SERVICIO="+this.idServicio;
+                Agente a = Agente.getAgente();
+                a.update(sql);
+            } catch (Exception ex) {
+                System.out.println(ex); 
+                exito = false;
+            }
+            
+            return exito;
 	}
         
         public static ArrayList<Servicio> readServicios(Date fecha, Empleado empleado) {
@@ -140,7 +156,9 @@ public class Servicio {
                     "    \"A1\".\"ID_RESTAURANTE\" = " + empleado.getnRestaurante().getId() + " \n" +
                     "    AND \"A3\".\"FECHA_SERVICIO\" = '" + formatter.format(fecha) +"' \n" +
                     "    AND \"A3\".\"ID_MESA\" = \"A1\".\"ID_MESA\"\n" +
-                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"";
+                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"\n" +
+                    "    AND \"A3\".\"ESTADO\" IN ('LIBRE', 'RESERVADA')\n" +
+                    "ORDER BY 1";
                 
                 Agente a = Agente.getAgente();
                 ArrayList result = a.select(sql);
@@ -181,7 +199,9 @@ public class Servicio {
                     "    AND \"A3\".\"FECHA_SERVICIO\" = '" + formatter.format(fecha) + "' \n" +
                     "    AND \"A2\".\"ID_PASE\" = " + pase.getIdPase() + " \n" +
                     "    AND \"A3\".\"ID_MESA\" = \"A1\".\"ID_MESA\"\n" +
-                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"";
+                    "    AND \"A3\".\"ID_TURNO\" = \"A2\".\"ID_TURNO\"\n" +
+                    "    AND \"A3\".\"ESTADO\" IN ('LIBRE', 'RESERVADA')\n" +
+                    "ORDER BY 1";
                 
                 Agente a = Agente.getAgente();
                 ArrayList result = a.select(sql);
