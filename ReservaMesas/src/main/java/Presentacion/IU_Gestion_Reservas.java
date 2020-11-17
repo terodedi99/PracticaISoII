@@ -24,7 +24,7 @@ import javax.swing.table.TableColumn;
  */
 public class IU_Gestion_Reservas extends javax.swing.JFrame {
 
-    private static Empleado sesionEmpleado;
+    public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
     private Pase[] pases;
     
@@ -289,7 +289,17 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarReservaActionPerformed
 
     private void btnAsignarCamareroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamareroActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = tablaServicios.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            this.setVisible(false);
+            IU_Asignar_Camarero asignarCamarero = new IU_Asignar_Camarero();
+            asignarCamarero.setFormGestionReservas(this);
+            asignarCamarero.setVisible(true);
+            asignarCamarero.setDatosServicio(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString());
+            asignarCamarero.cargarServicio();
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAsignarCamareroActionPerformed
 
     private void btnBuscarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarServicioActionPerformed

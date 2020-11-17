@@ -119,6 +119,42 @@ public class Servicio {
         public void setnEmpleado(Empleado nEmpleado) {
             this.nEmpleado = nEmpleado;
         }
+        
+        public void select() {
+            try {
+                String sql = "SELECT\n" +
+                    "    \"A1\".\"NUM_COMENSALES\"   \"NUM_COMENSALES\",\n" +
+                    "    \"A1\".\"COMENTARIOS\"      \"COMENTARIOS\"\n" +
+                    "FROM\n" +
+                    "    \"ISO2\".\"SERVICIOS\" \"A1\"\n" +
+                    "WHERE\n" +
+                    "    \"A1\".\"ID_SERVICIO\" = " + this.getIdServicio();
+                
+                Agente a = Agente.getAgente();
+                ArrayList result = a.select(sql);
+                
+                HashMap row = (HashMap) result.get(0);   
+                this.setNum_comensales(Integer.parseInt(row.get("NUM_COMENSALES").toString()));
+                this.setComentarios(row.get("COMENTARIOS").toString());       
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+        
+        public boolean insertServicioCamarero () {
+            boolean exito = true;
+            
+            try {
+                String sql = "INSERT INTO SERVICIOS_CAMAREROS VALUES (SEQ_ID_SERVICIOS_CAMAREROS.NEXTVAL, " + this.getIdServicio() + ", " + this.getnEmpleado().getIdEmpleado() + ")";
+                Agente a = Agente.getAgente();
+                a.insert(sql);  
+            } catch (Exception ex) {
+                System.out.println(ex);
+                exito = false;
+            }
+            
+            return exito;
+        }
 	
 	public boolean update() {
             boolean exito = true;

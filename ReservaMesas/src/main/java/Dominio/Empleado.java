@@ -1,5 +1,9 @@
 package Dominio;
 
+import Persistencia.Agente;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Empleado {
         
         public enum Rol {
@@ -24,6 +28,11 @@ public class Empleado {
             this.DNI = DNI;
             this.nombre = nombre;
             this.apellidos = apellidos;
+        }
+        
+        public Empleado (int id, String DNI, String nombre, String apellidos, long tfno_contacto) {
+            this(id, DNI, nombre, apellidos);
+            this.tfno_contacto = tfno_contacto;
         }
         
         public Empleado (int id, String DNI, String nombre, String apellidos, long tfno_contacto, Rol tipoEmpleado, Restaurante nRestaurante) {
@@ -88,4 +97,37 @@ public class Empleado {
         public void setnRestaurante(Restaurante nRestaurante) {
             this.nRestaurante = nRestaurante;
         }
+        
+        public static ArrayList<Empleado> readCamareros (Restaurante r) {
+            ArrayList<Empleado> listaCamareros = new ArrayList<>();
+            
+            try {
+                String sql = "SELECT\n" +
+                        "    \"A1\".\"ID_EMPLEADO\"     \"ID_EMPLEADO\",\n" +
+                        "    \"A1\".\"DNI\"             \"DNI\",\n" +
+                        "    \"A1\".\"NOMBRE\"          \"NOMBRE\",\n" +
+                        "    \"A1\".\"APELLIDOS\"       \"APELLIDOS\",\n" +
+                        "    \"A1\".\"TFNO_CONTACTO\"   \"TFNO_CONTACTO\"\n" +
+                        "FROM\n" +
+                        "    \"ISO2\".\"EMPLEADOS\" \"A1\"\n" +
+                        "WHERE\n" +
+                        "    \"A1\".\"ID_RESTAURANTE\" = " + r.getId() + "\n" +
+                        "    AND \"A1\".\"ROL\" = 'CAMARERO'";
+                
+                Agente a = Agente.getAgente();
+                ArrayList result = a.select(sql);
+                
+                
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap row = (HashMap) result.get(i);   
+                    Empleado e = new Empleado (Integer.parseInt(row.get("ID_EMPLEADO").toString()),row.get("DNI").toString(), row.get("NOMBRE").toString(), row.get("APELLIDOS").toString(), Long.parseLong(row.get("TFNO_CONTACTO").toString()));
+                    
+                    listaCamareros.add(e);
+                }  
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+                    
+            return listaCamareros;
+        }    
 }

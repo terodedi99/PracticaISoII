@@ -37,9 +37,29 @@ public class GestorServicio {
             return exito;
 	}
 
-	public static void asignarCamareroAServicio(Date fecha, int turno, int mesa, int camarero) {
-		// TODO - implement Gestor_Servicio.asignarCamareroAServicio
-		throw new UnsupportedOperationException();
+	public static boolean asignarCamareroAServicio(int idServicio, String numComensales, String comentarios, int idCamarero) {
+            boolean exito;
+            
+            try {
+                int num_comensales = Integer.parseInt(numComensales);
+                if (comentarios.length() > 0 && comentarios.length() < 120) {
+                    Servicio s = new Servicio (idServicio, num_comensales, comentarios);
+                    s.setEstado(Servicio.Estado.valueOf("OCUPADA"));
+                    
+                    Empleado e = new Empleado (idCamarero, "", "", "");
+                    s.setnEmpleado(e);
+                    
+                    exito = s.update() && s.insertServicioCamarero();
+                } else {
+                    JOptionPane.showMessageDialog(null, "EL COMENTARIO NO PUEDE SER VACIO Y NO SOBREPASAR LOS 120 CARACTERES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    exito = false;
+                }    
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR EL NUMERO DE COMENSALES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                exito = false;
+            }
+            
+            return exito;
 	}
         
         public static ArrayList<Servicio> buscarListaServicios(Date fecha, Empleado empleado) {
@@ -48,5 +68,12 @@ public class GestorServicio {
         
         public static ArrayList<Servicio> buscarListaServicios(Date fecha, Empleado empleado, Pase pase) {
             return Servicio.readServicios(fecha, empleado, pase);
+        }
+        
+        public static Servicio buscarDatosServicio (int idServicio) {           
+            Servicio s = new Servicio (idServicio, 0, "");
+            s.select();
+            
+            return s;
         }
 }
