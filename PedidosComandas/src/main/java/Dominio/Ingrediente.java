@@ -1,10 +1,7 @@
 package Dominio;
 
-import java.util.*;
-
 public class Ingrediente {
 
-	ArrayList<Info_Elaboracion> info_Elaboracion;
 	private int idIngrediente;
 	private String descripcionIngrediente;
 	private float stock;

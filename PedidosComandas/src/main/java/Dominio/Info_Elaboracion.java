@@ -2,8 +2,8 @@ package Dominio;
 
 public class Info_Elaboracion {
 
-	Producto nIngredientes;
-	Ingrediente nProductos;
+	private Producto nIngredientes;
+	private Ingrediente nProductos;
 	private float cantidad;
 
 	public float getCantidad() {

@@ -2,10 +2,10 @@ package Dominio;
 
 public class Comanda {
 
-	Servicio nComanda;
+	private Servicio nComanda;
 	private int idComanda;
 	private float total;
-	private int pagado;
+	private int pagada;
 
 	public int getIdComanda() {
 		return this.idComanda;
@@ -32,7 +32,7 @@ public class Comanda {
 	}
 
 	public int getPagado() {
-		return this.pagado;
+		return this.pagada;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Comanda {
 	 * @param pagado
 	 */
 	public void setPagado(int pagado) {
-		this.pagado = pagado;
+		this.pagada = pagado;
 	}
 
 }
