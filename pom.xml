@@ -8,6 +8,7 @@
     <modules>
         <module>Persistencia</module>
         <module>ReservaMesas</module>
+        <module>PedidosComandas</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
