@@ -1,50 +1,48 @@
 package Dominio;
 
-import java.util.*;
-
 public class Producto {
 
-	ArrayList<LineaComanda> nProductos;
-	ArrayList<Info_Elaboracion> info_Elaboracion;
 	private int idProducto;
 	private String descripcionProducto;
+        private String tipoProducto;
 	private float precio;
 
-	public void getIdProducto() {
-		// TODO - implement Producto.getIdProducto
-		throw new UnsupportedOperationException();
-	}
+        public Producto(int idProducto, String descripcionProducto, String tipoProducto, float precio) {
+            this.idProducto = idProducto;
+            this.descripcionProducto = descripcionProducto;
+            this.tipoProducto = tipoProducto;
+            this.precio = precio;
+        }
 
-	/**
-	 * 
-	 * @param idProducto
-	 */
-	public void setIdProducto(int idProducto) {
-		this.idProducto = idProducto;
-	}
+        public int getIdProducto() {
+            return idProducto;
+        }
 
-	public float getPrecio() {
-		return this.precio;
-	}
+        public void setIdProducto(int idProducto) {
+            this.idProducto = idProducto;
+        }
 
-	/**
-	 * 
-	 * @param precio
-	 */
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
+        public String getDescripcionProducto() {
+            return descripcionProducto;
+        }
 
-	public String getDescripcionProducto() {
-		return this.descripcionProducto;
-	}
+        public void setDescripcionProducto(String descripcionProducto) {
+            this.descripcionProducto = descripcionProducto;
+        }
 
-	/**
-	 * 
-	 * @param descripcionProducto
-	 */
-	public void setDescripcionProducto(String descripcionProducto) {
-		this.descripcionProducto = descripcionProducto;
-	}
+        public String getTipoProducto() {
+            return tipoProducto;
+        }
 
+        public void setTipoProducto(String tipoProducto) {
+            this.tipoProducto = tipoProducto;
+        }
+
+        public float getPrecio() {
+            return precio;
+        }
+
+        public void setPrecio(float precio) {
+            this.precio = precio;
+        }
 }

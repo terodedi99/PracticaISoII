@@ -5,28 +5,24 @@ public class MetodoPago {
 	private int idMetodoPago;
 	private String descripcionPago;
 
-	public int getIdMetodoPago() {
-		return this.idMetodoPago;
-	}
+	public MetodoPago (int idMetodoPago, String descripcionMetodoPago) {
+            this.idMetodoPago = idMetodoPago;
+            this.descripcionPago = descripcionMetodoPago;
+        }
 
-	/**
-	 * 
-	 * @param idMetodoPago
-	 */
-	public void setIdMetodoPago(int idMetodoPago) {
-		this.idMetodoPago = idMetodoPago;
-	}
+        public int getIdMetodoPago() {
+            return idMetodoPago;
+        }
 
-	public String getDescripcionPago() {
-		return this.descripcionPago;
-	}
+        public void setIdMetodoPago(int idMetodoPago) {
+            this.idMetodoPago = idMetodoPago;
+        }
 
-	/**
-	 * 
-	 * @param descripcionPago
-	 */
-	public void setDescripcionPago(String descripcionPago) {
-		this.descripcionPago = descripcionPago;
-	}
+        public String getDescripcionPago() {
+            return descripcionPago;
+        }
 
+        public void setDescripcionPago(String descripcionPago) {
+            this.descripcionPago = descripcionPago;
+        }     
 }

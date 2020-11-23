@@ -4,68 +4,55 @@ public class Ingrediente {
 
 	private int idIngrediente;
 	private String descripcionIngrediente;
-	private float stock;
-	private float cantidad;
+        private float cantidad;
 	private String unidad;
+	private float stockIdeal;
 
-	public int getIdIngrediente() {
-		return this.idIngrediente;
-	}
+        public Ingrediente(int idIngrediente, String descripcionIngrediente, float cantidad, String unidad, float stockIdeal) {
+            this.idIngrediente = idIngrediente;
+            this.descripcionIngrediente = descripcionIngrediente;
+            this.cantidad = cantidad;
+            this.unidad = unidad;
+            this.stockIdeal = stockIdeal;
+        }
 
-	/**
-	 * 
-	 * @param idIngrediente
-	 */
-	public void setIdIngrediente(int idIngrediente) {
-		this.idIngrediente = idIngrediente;
-	}
+        public int getIdIngrediente() {
+            return idIngrediente;
+        }
 
-	public String getDescripcionIngrediente() {
-		return this.descripcionIngrediente;
-	}
+        public void setIdIngrediente(int idIngrediente) {
+            this.idIngrediente = idIngrediente;
+        }
 
-	/**
-	 * 
-	 * @param descripcionIngrediente
-	 */
-	public void setDescripcionIngrediente(String descripcionIngrediente) {
-		this.descripcionIngrediente = descripcionIngrediente;
-	}
+        public String getDescripcionIngrediente() {
+            return descripcionIngrediente;
+        }
 
-	public String getUnidad() {
-		return this.unidad;
-	}
+        public void setDescripcionIngrediente(String descripcionIngrediente) {
+            this.descripcionIngrediente = descripcionIngrediente;
+        }
 
-	/**
-	 * 
-	 * @param unidad
-	 */
-	public void setUnidad(String unidad) {
-		this.unidad = unidad;
-	}
+        public float getCantidad() {
+            return cantidad;
+        }
 
-	public float getStock() {
-		return this.stock;
-	}
+        public void setCantidad(float cantidad) {
+            this.cantidad = cantidad;
+        }
 
-	/**
-	 * 
-	 * @param stock
-	 */
-	public void setStock(float stock) {
-		this.stock = stock;
-	}
+        public String getUnidad() {
+            return unidad;
+        }
 
-	public float getCantidad() {
-		return this.cantidad;
-	}
+        public void setUnidad(String unidad) {
+            this.unidad = unidad;
+        }
 
-	/**
-	 * 
-	 * @param cantidad
-	 */
-	public void setCantidad(float cantidad) {
-		this.cantidad = cantidad;
-	}
+        public float getStockIdeal() {
+            return stockIdeal;
+        }
 
+        public void setStockIdeal(float stockIdeal) {
+            this.stockIdeal = stockIdeal;
+        }
 }
