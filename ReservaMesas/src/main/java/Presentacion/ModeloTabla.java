@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  * Modelo de la tabla
- * @author Luis
+ * @author Antonio
  */
 public class ModeloTabla extends DefaultTableModel {
     

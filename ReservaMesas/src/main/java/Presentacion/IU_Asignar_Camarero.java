@@ -16,10 +16,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-/**
- *
- * @author pikac
- */
 public class IU_Asignar_Camarero extends javax.swing.JFrame {
 
     private final WindowListener exitListener;

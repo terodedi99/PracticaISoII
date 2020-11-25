@@ -18,10 +18,6 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-/**
- *
- * @author pikac
- */
 public class IU_Gestion_Reservas extends javax.swing.JFrame {
 
     public static Empleado sesionEmpleado;

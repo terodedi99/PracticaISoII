@@ -7,10 +7,6 @@ package Dominio;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author pikac
- */
 public class GestorCamarero {
     public static ArrayList<Empleado> buscarListaCamareros(Restaurante r) {
         return Empleado.readCamareros(r);

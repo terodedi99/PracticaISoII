@@ -10,10 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-/**
- *
- * @author pikac
- */
 public class IU_Reservar_Mesa extends javax.swing.JFrame {
 
     private final WindowListener exitListener;
@@ -137,35 +133,31 @@ public class IU_Reservar_Mesa extends javax.swing.JFrame {
                 .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelReservaMesasLayout.createSequentialGroup()
                         .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                                .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTurno)
-                                    .addComponent(lblFecha))
-                                .addGap(161, 161, 161)
-                                .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTurno)
-                                    .addComponent(txtFecha)))
-                            .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                                .addComponent(lblMesa)
-                                .addGap(176, 176, 176)
-                                .addComponent(txtMesa))
-                            .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                                .addComponent(lblIdServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtIdServicio))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                                .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                                        .addComponent(lblNumComensales)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cboNumComensales, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
+                            .addComponent(lblTurno)
+                            .addComponent(lblFecha))
+                        .addGap(161, 161, 161)
+                        .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTurno)
+                            .addComponent(txtFecha)))
                     .addGroup(panelReservaMesasLayout.createSequentialGroup()
-                        .addComponent(btnReservar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(lblMesa)
+                        .addGap(176, 176, 176)
+                        .addComponent(txtMesa))
+                    .addGroup(panelReservaMesasLayout.createSequentialGroup()
+                        .addComponent(lblIdServicio)
+                        .addGap(135, 135, 135)
+                        .addComponent(txtIdServicio))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelReservaMesasLayout.createSequentialGroup()
+                        .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblComentarios, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelReservaMesasLayout.createSequentialGroup()
+                                .addComponent(lblNumComensales)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboNumComensales, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnReservar))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelReservaMesasLayout.setVerticalGroup(
             panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
