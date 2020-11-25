@@ -12,13 +12,10 @@ import Dominio.Servicio;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-/**
- *
- * @author pikac
- */
+
 public class IU_Gestion_Comandas extends javax.swing.JFrame {
 
     public static Empleado sesionEmpleado;
@@ -112,7 +109,7 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        lblTitulo.setText("GESTIÓN DE RESERVAS");
+        lblTitulo.setText("GESTIÓN DE COMANDAS");
 
         btnAnotarComanda.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btnAnotarComanda.setText("ANOTAR COMANDA");
@@ -138,12 +135,10 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         panelReservasLayout.setHorizontalGroup(
             panelReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelReservasLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(panelReservasLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(panelReservasLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(btnAnotarComanda)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnBuscarServicio)))
@@ -184,17 +179,15 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
     private void btnAnotarComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnotarComandaActionPerformed
         int filaSeleccionada = tablaServicios.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("LIBRE")) {
-//                this.setVisible(false);
-//                IU_Reservar_Mesa reservarMesa = new IU_Reservar_Mesa();
-//                reservarMesa.setFormGestionReservas(this);
-//                reservarMesa.setVisible(true);
-//                reservarMesa.setDatosServicio(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString());
-            } else {
-                //JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO DEBE SER LIBRE PARA PODER SER RESERVADO", "NO SE PUEDE RESERVAR ESA MESA", JOptionPane.ERROR_MESSAGE);
+            if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("OCUPADA") || tablaServicios.getValueAt(filaSeleccionada, 4).equals("PIDIENDO")) {
+                this.setVisible(false);
+                IU_Anotar_Comanda anotarComanda = new IU_Anotar_Comanda();
+                anotarComanda.setFormGestionComandas(this);
+                anotarComanda.setVisible(true);
+                anotarComanda.setDatosComanda(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString(), tablaServicios.getValueAt(filaSeleccionada, 5).toString());
             }
         } else {
-            //JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "NO SE PUEDE RESERVAR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "NO SE PUEDE ANOTAR UNA COMANDA", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAnotarComandaActionPerformed
 
