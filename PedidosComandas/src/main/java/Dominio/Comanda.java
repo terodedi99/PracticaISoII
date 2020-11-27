@@ -13,6 +13,10 @@ public class Comanda {
     private Servicio servicio;
     private MetodoPago metodoPago;
 
+    public Comanda (Servicio s) {
+        this.servicio = s;
+    }
+    
     public Comanda (int idComanda, float total, int pagada) {
         this.idComanda = idComanda;
         this.total = total;
@@ -103,5 +107,38 @@ public class Comanda {
 
         return listaServicios;
     }
+    
+    public boolean insert() {
+        boolean exito = true;
         
+        try {
+            String sql = "INSERT INTO COMANDAS VALUES (SEQ_ID_COMANDA.NEXTVAL, " + getTotal() + ", 0, " + getServicio().getIdServicio() + ")";
+            
+            Agente a = Agente.getAgente();
+            a.insert(sql);    
+        } catch (Exception ex) {
+            System.out.println(ex);
+            exito = false;
+        }
+          
+        return exito;
+    }
+    
+    
+    public boolean updateServicio () {
+        boolean exito = true;
+        
+        try {
+            String sql = "UPDATE SERVICIOS SET ESTADO='" + getServicio().getEstado().toString() + "' WHERE ID_SERVICIO=" + servicio.getIdServicio();
+            
+            Agente a = Agente.getAgente();
+            a.update(sql);
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            exito = false;
+        }
+         
+        return exito;
+    }     
 }

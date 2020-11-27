@@ -7,6 +7,11 @@ public class Elaboracion {
 	private Ingrediente ingrediente;
 	private float cantidadElaboracion;
 
+        public Elaboracion (Ingrediente ingrediente, float cantidadElaboracion) {
+            this.ingrediente = ingrediente;
+            this.cantidadElaboracion = cantidadElaboracion;
+        }
+        
         public Elaboracion (int idElaboracion, Producto producto, Ingrediente ingrediente, float cantidadElaboracion) {
             this.idElaboracion = idElaboracion;
             this.producto = producto;

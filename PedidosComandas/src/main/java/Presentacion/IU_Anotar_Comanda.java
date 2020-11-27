@@ -5,9 +5,16 @@
  */
 package Presentacion;
 
+import Dominio.Comanda;
+import Dominio.GestorComandas;
+import Dominio.LineaComanda;
+import Dominio.Producto;
+import Dominio.Servicio;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 
@@ -25,6 +32,7 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 formComandas.setVisible(true);
+                formComandas.cargarDatos();
                 cerrar();
             }
         };
@@ -121,6 +129,11 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
 
         btnAnotarComanda.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnAnotarComanda.setText("CONFIRMAR COMANDA");
+        btnAnotarComanda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnotarComandaActionPerformed(evt);
+            }
+        });
 
         lblTituloComanda.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTituloComanda.setText("COMANDA");
@@ -151,9 +164,19 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
 
         btnModificar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnModificar.setText("MODIFICAR");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         lblTurno.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTurno.setText("TURNO:");
@@ -281,46 +304,98 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
 
     private void btnAñadirLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirLineaActionPerformed
         this.setVisible(false);
-        IU_Anotar_Linea_Comanda anotarLineaComanda = new IU_Anotar_Linea_Comanda();
+        IU_Anotar_Linea_Comanda anotarLineaComanda = new IU_Anotar_Linea_Comanda('A');
         anotarLineaComanda.setFormAnotarComanda(this);
         anotarLineaComanda.setVisible(true);
     }//GEN-LAST:event_btnAñadirLineaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Anotar_Comanda().setVisible(true);
-            }
-        });
+    public void aniadirLineaComanda (LineaComanda linea) {
+        modelo.fireTableDataChanged();
+        
+        Object[] obj = new Object[5];
+        
+        obj[0] = linea.getnLinea().getIdProducto();
+        obj[1] = linea.getnLinea().getDescripcionProducto();
+        obj[2] = linea.getnLinea().getTipoProducto();
+        obj[3] = linea.getPrecioVenta();
+        obj[4] = linea.getCantidad();
+        
+        modelo.addRow(obj);
+        
+        calcularTotal();
     }
+    
+    public void modificarLineaComanda (int numLinea, int cantidad) {
+        modelo.fireTableDataChanged();
+        modelo.setValueAt(cantidad, numLinea, 4);
+        
+        calcularTotal();
+    }
+    
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaSeleccionada = tablaLineas.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            modelo.getDataVector().removeElementAt(filaSeleccionada);
+            modelo.fireTableDataChanged();
+            
+            calcularTotal();
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA BORRAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int filaSeleccionada = tablaLineas.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            this.setVisible(false);
+            IU_Anotar_Linea_Comanda anotarLineaComanda = new IU_Anotar_Linea_Comanda('M');
+            anotarLineaComanda.setNumeroLinea(filaSeleccionada);
+            anotarLineaComanda.setFormAnotarComanda(this);
+            anotarLineaComanda.setVisible(true);
+            anotarLineaComanda.setInformacion(new Producto(Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada, 0).toString()), tablaLineas.getValueAt(filaSeleccionada, 1).toString(), tablaLineas.getValueAt(filaSeleccionada, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(filaSeleccionada, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada,4).toString()));
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA MODIFICAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }    
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnAnotarComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnotarComandaActionPerformed
+        if (tablaLineas.getRowCount() > 0) {
+            Comanda comanda = new Comanda (-1, Float.parseFloat(txtTotal.getText()), 0);
+            comanda.setServicio(new Servicio(Integer.parseInt(txtServicio.getText()), 0, ""));
+            
+            ArrayList<LineaComanda> lineasComanda = new ArrayList<>();
+            for (int i = 0; i < tablaLineas.getRowCount(); i++) {
+                lineasComanda.add(new LineaComanda(-1, null, new Producto(Integer.parseInt(tablaLineas.getValueAt(i, 0).toString()),tablaLineas.getValueAt(i, 1).toString(), tablaLineas.getValueAt(i, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(i, 4).toString()), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString()), 0));
+            }
+            
+            boolean exito = GestorComandas.insertarComanda(comanda, lineasComanda);
+            if (exito) {
+                GestorComandas.cambiarEstadoServicio(Integer.parseInt(txtServicio.getText()), "ESPERANDO_LA_CUENTA");
+                GestorComandas.actualizarStock(lineasComanda);
+                
+                this.setVisible(false);
+                formComandas.cargarDatos();
+                formComandas.setVisible(true);
+                cerrar();
+            } else {
+                JOptionPane.showMessageDialog(null, "ERROR AL AÑADIR LA COMANDA, CONTACTA CON SOPORTE", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "NO PUEDES INTRODUCIR UNA COMANDA SIN LINEAS", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAnotarComandaActionPerformed
+
+    public void calcularTotal () {
+        float precio, total = 0.0f; int cantidad;
+        for (int i = 0; i < tablaLineas.getRowCount(); i++) {
+            precio = Float.parseFloat(tablaLineas.getValueAt(i, 3).toString());
+            cantidad = Integer.parseInt(tablaLineas.getValueAt(i, 4).toString());
+            
+            total = total + (precio * cantidad);
+        }
+        
+        txtTotal.setText(String.valueOf(total));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnotarComanda;
     private javax.swing.JButton btnAñadirLinea;

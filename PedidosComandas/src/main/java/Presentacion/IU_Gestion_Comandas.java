@@ -181,6 +181,12 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         if (filaSeleccionada >= 0) {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("OCUPADA") || tablaServicios.getValueAt(filaSeleccionada, 4).equals("PIDIENDO")) {
                 this.setVisible(false);
+                if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("OCUPADA")) {
+                    boolean exito = GestorComandas.cambiarEstadoServicio(Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()), "PIDIENDO");
+                    if (!exito) {
+                        JOptionPane.showMessageDialog(null, "NO SE PUEDE CAMBIAR EL ESTADO A PIDIENDO", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }   
                 IU_Anotar_Comanda anotarComanda = new IU_Anotar_Comanda();
                 anotarComanda.setFormGestionComandas(this);
                 anotarComanda.setVisible(true);

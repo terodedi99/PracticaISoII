@@ -8,6 +8,11 @@ public class Ingrediente {
 	private String unidad;
 	private float stockIdeal;
 
+        public Ingrediente (int idIngrediente, float cantidad) {
+            this.idIngrediente = idIngrediente;
+            this.cantidad = cantidad;
+        }
+        
         public Ingrediente(int idIngrediente, String descripcionIngrediente, float cantidad, String unidad, float stockIdeal) {
             this.idIngrediente = idIngrediente;
             this.descripcionIngrediente = descripcionIngrediente;

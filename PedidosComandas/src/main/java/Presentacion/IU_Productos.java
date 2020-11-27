@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 
@@ -122,6 +123,11 @@ public class IU_Productos extends javax.swing.JFrame {
 
         btnConfirmar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnConfirmar.setText("CONFIRMAR PRODUCTO");
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -169,40 +175,17 @@ public class IU_Productos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            this.setVisible(false);
+            formAnotarLineaComanda.setInformacion(new Producto(Integer.parseInt(tablaProductos.getValueAt(filaSeleccionada, 0).toString()), tablaProductos.getValueAt(filaSeleccionada, 1).toString(), tablaProductos.getValueAt(filaSeleccionada, 2).toString(), Float.parseFloat(tablaProductos.getValueAt(filaSeleccionada, 3).toString())));
+            formAnotarLineaComanda.setVisible(true);
+            cerrar();
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Productos().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;

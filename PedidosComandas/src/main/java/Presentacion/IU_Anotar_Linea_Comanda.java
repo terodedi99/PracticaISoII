@@ -5,20 +5,25 @@
  */
 package Presentacion;
 
+import Dominio.LineaComanda;
+import Dominio.Producto;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JOptionPane;
 
 
 public class IU_Anotar_Linea_Comanda extends javax.swing.JFrame {
 
     private final WindowListener exitListener;
     private IU_Anotar_Comanda formAnotarComanda;
+    private char modo;
+    private int numLinea;
     
     /**
      * Creates new form IU_Anotar_Linea_Comanda
      */
-    public IU_Anotar_Linea_Comanda() {
+    public IU_Anotar_Linea_Comanda(char modo) {
         this.exitListener = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -26,14 +31,39 @@ public class IU_Anotar_Linea_Comanda extends javax.swing.JFrame {
                 cerrar();
             }
         };
-          
+         
+        this.modo = modo;
         
         initComponents();
            
+        if (this.modo == 'M') {
+            btnSeleccionarProducto.setEnabled(false);
+        }
+        
         this.setTitle("ANOTAR LINEA COMANDA");
         this.setLocationRelativeTo(null); 
         this.addWindowListener(exitListener);
     }
+    
+    public void setInformacion (Producto p) {
+        txtIdProducto.setText(String.valueOf(p.getIdProducto()));
+        txtDescripcion.setText(p.getDescripcionProducto());
+        txtTipoProducto.setText(p.getTipoProducto());
+        txtPrecio.setText(String.valueOf(p.getPrecio()));
+    }
+    
+    public void setNumeroLinea (int numLinea) {
+        this.numLinea = numLinea;
+    }
+    
+    public void setInformacion (Producto p, int cantidad) {
+        txtIdProducto.setText(String.valueOf(p.getIdProducto()));
+        txtDescripcion.setText(p.getDescripcionProducto());
+        txtTipoProducto.setText(p.getTipoProducto());
+        txtPrecio.setText(String.valueOf(p.getPrecio()));
+        txtCantidad.setValue(cantidad);
+    }
+    
     
     public void setFormAnotarComanda (IU_Anotar_Comanda formAnotarComanda) {
         this.formAnotarComanda = formAnotarComanda;
@@ -98,6 +128,11 @@ public class IU_Anotar_Linea_Comanda extends javax.swing.JFrame {
 
         btnConfirmarLinea.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnConfirmarLinea.setText("CONFIRMAR LINEA");
+        btnConfirmarLinea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarLineaActionPerformed(evt);
+            }
+        });
 
         btnSeleccionarProducto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSeleccionarProducto.setText("SELECCIONAR");
@@ -197,41 +232,41 @@ public class IU_Anotar_Linea_Comanda extends javax.swing.JFrame {
         productos.setVisible(true);
     }//GEN-LAST:event_btnSeleccionarProductoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void btnConfirmarLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarLineaActionPerformed
+        int cantidad;
+        if (!txtIdProducto.getText().equals("")) {
+            cantidad = comprobarValue();
+            if (cantidad > 0) {
+                this.setVisible(false);
+                
+                if (this.modo == 'A') {
+                    formAnotarComanda.aniadirLineaComanda(new LineaComanda(new Producto(Integer.parseInt(txtIdProducto.getText()), txtDescripcion.getText(), txtTipoProducto.getText(), Float.parseFloat(txtPrecio.getText())), cantidad, Float.parseFloat(txtPrecio.getText())));
+                } else {
+                    formAnotarComanda.modificarLineaComanda(numLinea, cantidad);
                 }
+                
+                formAnotarComanda.setVisible(true);
+                cerrar();
+            } else {
+                JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA CANTIDAD VALIDA", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Linea_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Linea_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Linea_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Anotar_Linea_Comanda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
+        
+    }//GEN-LAST:event_btnConfirmarLineaActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Anotar_Linea_Comanda().setVisible(true);
-            }
-        });
+    private int comprobarValue () {
+        int cantidad = 0;
+        try {
+            cantidad = txtCantidad.getValue();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA CANTIDAD VALIDA", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return cantidad;
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmarLinea;
     private javax.swing.JButton btnSeleccionarProducto;
