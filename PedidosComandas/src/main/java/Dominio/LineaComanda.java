@@ -161,4 +161,141 @@ public class LineaComanda {
         
         return exito;
     }
+    
+    public static ArrayList<LineaComanda> readLineasComandaPendientes(int idEmpleado, String rolEmpleado) {
+        ArrayList<LineaComanda> listaLineas = new ArrayList<>();
+    
+        try {
+            String sql = "";
+            
+            switch (rolEmpleado) {
+                case "CAMARERO_BARRA":
+                    sql = "SELECT\n" +
+                        "    \"A3\".\"ID_COMANDA\"             \"ID_COMANDA\",\n" +
+                        "    \"A2\".\"ID_LINEA_COMANDA\"       \"ID_LINEA_COMANDA\",\n" +
+                        "    \"A1\".\"ID_PRODUCTO\"            \"ID_PRODUCTO\",\n" +
+                        "    \"A1\".\"DESCRIPCION_PRODUCTO\"   \"DESCRIPCION_PRODUCTO\",\n" +
+                        "    \"A1\".\"TIPO_PRODUCTO\"          \"TIPO_PRODUCTO\",\n" +
+                        "    \"A2\".\"CANTIDAD\"               \"CANTIDAD\",\n" +
+                        "    \"A5\".\"NOMBRE_MESA\"            \"NOMBRE_MESA\"\n" +
+                        "FROM\n" +
+                        "    \"ISO2\".\"MESAS\"             \"A5\",\n" +
+                        "    \"ISO2\".\"SERVICIOS\"         \"A4\",\n" +
+                        "    \"ISO2\".\"COMANDAS\"          \"A3\",\n" +
+                        "    \"ISO2\".\"LINEAS_COMANDAS\"   \"A2\",\n" +
+                        "    \"ISO2\".\"PRODUCTOS\"         \"A1\"\n" +
+                        "WHERE\n" +
+                        "    \"A2\".\"SERVIDO\" = 0\n" +
+                        "    AND \"A5\".\"ID_RESTAURANTE\" = 1\n" +
+                        "    AND \"A1\".\"TIPO_PRODUCTO\" = 'BEBIDA'\n" +
+                        "    AND \"A5\".\"ID_MESA\" = \"A4\".\"ID_MESA\"\n" +
+                        "    AND \"A4\".\"ID_SERVICIO\" = \"A3\".\"ID_SERVICIO\"\n" +
+                        "    AND \"A3\".\"ID_COMANDA\" = \"A2\".\"ID_COMANDA\"\n" +
+                        "    AND \"A2\".\"ID_PRODUCTO\" = \"A1\".\"ID_PRODUCTO\"\n" +
+                        "ORDER BY\n" +
+                        "    \"A3\".\"ID_COMANDA\",\n" +
+                        "    \"A2\".\"ID_LINEA_COMANDA\",\n" +
+                        "    \"A1\".\"TIPO_PRODUCTO\"";
+                    break;
+                case "COCINERO":
+                    sql = "SELECT\n" +
+                        "    \"A3\".\"ID_COMANDA\"             \"ID_COMANDA\",\n" +
+                        "    \"A2\".\"ID_LINEA_COMANDA\"       \"ID_LINEA_COMANDA\",\n" +
+                        "    \"A1\".\"ID_PRODUCTO\"            \"ID_PRODUCTO\",\n" +
+                        "    \"A1\".\"DESCRIPCION_PRODUCTO\"   \"DESCRIPCION_PRODUCTO\",\n" +
+                        "    \"A1\".\"TIPO_PRODUCTO\"          \"TIPO_PRODUCTO\",\n" +
+                        "    \"A2\".\"CANTIDAD\"               \"CANTIDAD\",\n" +
+                        "    \"A5\".\"NOMBRE_MESA\"            \"NOMBRE_MESA\"\n" +
+                        "FROM\n" +
+                        "    \"ISO2\".\"MESAS\"             \"A5\",\n" +
+                        "    \"ISO2\".\"SERVICIOS\"         \"A4\",\n" +
+                        "    \"ISO2\".\"COMANDAS\"          \"A3\",\n" +
+                        "    \"ISO2\".\"LINEAS_COMANDAS\"   \"A2\",\n" +
+                        "    \"ISO2\".\"PRODUCTOS\"         \"A1\"\n" +
+                        "WHERE\n" +
+                        "    \"A2\".\"SERVIDO\" = 0\n" +
+                        "    AND \"A5\".\"ID_RESTAURANTE\" = 1\n" +
+                        "    AND ( \"A1\".\"TIPO_PRODUCTO\" = 'PRIMER PLATO'\n" +
+                        "          OR \"A1\".\"TIPO_PRODUCTO\" = 'SEGUNDO PLATO'\n" +
+                        "          OR \"A1\".\"TIPO_PRODUCTO\" = 'POSTRE' )\n" +
+                        "    AND \"A5\".\"ID_MESA\" = \"A4\".\"ID_MESA\"\n" +
+                        "    AND \"A4\".\"ID_SERVICIO\" = \"A3\".\"ID_SERVICIO\"\n" +
+                        "    AND \"A3\".\"ID_COMANDA\" = \"A2\".\"ID_COMANDA\"\n" +
+                        "    AND \"A2\".\"ID_PRODUCTO\" = \"A1\".\"ID_PRODUCTO\"\n" +
+                        "ORDER BY\n" +
+                        "    \"A3\".\"ID_COMANDA\",\n" +
+                        "    \"A2\".\"ID_LINEA_COMANDA\",\n" +
+                        "    \"A1\".\"TIPO_PRODUCTO\"";
+                    break;
+                case "CAMARERO":
+                    sql = "SELECT\n" +
+                        "    \"A4\".\"ID_COMANDA\"             \"ID_COMANDA\",\n" +
+                        "    \"A3\".\"ID_LINEA_COMANDA\"       \"ID_LINEA_COMANDA\",\n" +
+                        "    \"A3\".\"CANTIDAD\"               \"CANTIDAD\",\n" +
+                        "    \"A2\".\"ID_PRODUCTO\"            \"ID_PRODUCTO\",\n" +
+                        "    \"A2\".\"DESCRIPCION_PRODUCTO\"   \"DESCRIPCION_PRODUCTO\",\n" +
+                        "    \"A2\".\"TIPO_PRODUCTO\"          \"TIPO_PRODUCTO\",\n" +
+                        "    \"A6\".\"NOMBRE_MESA\"            \"NOMBRE_MESA\"\n" +
+                        "FROM\n" +
+                        "    \"ISO2\".\"MESAS\"                 \"A6\",\n" +
+                        "    \"ISO2\".\"SERVICIOS\"             \"A5\",\n" +
+                        "    \"ISO2\".\"COMANDAS\"              \"A4\",\n" +
+                        "    \"ISO2\".\"LINEAS_COMANDAS\"       \"A3\",\n" +
+                        "    \"ISO2\".\"PRODUCTOS\"             \"A2\",\n" +
+                        "    \"ISO2\".\"SERVICIOS_CAMAREROS\"   \"A1\"\n" +
+                        "WHERE\n" +
+                        "    \"A3\".\"SERVIDO\" = 1\n" +
+                        "    AND \"A1\".\"ID_CAMARERO\" = 1\n" +
+                        "    AND \"A6\".\"ID_MESA\" = \"A5\".\"ID_MESA\"\n" +
+                        "    AND \"A5\".\"ID_SERVICIO\" = \"A4\".\"ID_SERVICIO\"\n" +
+                        "    AND \"A4\".\"ID_COMANDA\" = \"A3\".\"ID_COMANDA\"\n" +
+                        "    AND \"A3\".\"ID_PRODUCTO\" = \"A2\".\"ID_PRODUCTO\"\n" +
+                        "    AND \"A5\".\"ID_SERVICIO\" = \"A1\".\"ID_SERVICIO\"\n" +
+                        "ORDER BY\n" +
+                        "    \"A4\".\"ID_COMANDA\",\n" +
+                        "    \"A3\".\"ID_LINEA_COMANDA\",\n" +
+                        "    \"A2\".\"TIPO_PRODUCTO\"";
+                    break;
+            }
+
+            Agente a = Agente.getAgente();
+            ArrayList result = a.select(sql);
+
+            for (int i = 0; i < result.size(); i++) {
+                HashMap row = (HashMap) result.get(i);   
+                
+                Mesa m = new Mesa (0, row.get("NOMBRE_MESA").toString());
+                Producto p = new Producto (Integer.parseInt(row.get("ID_PRODUCTO").toString()), row.get("DESCRIPCION_PRODUCTO").toString(), row.get("TIPO_PRODUCTO").toString(), 0.00f);
+                Servicio s = new Servicio (0, 0, ""); s.setnMesa(m);
+                Comanda c = new Comanda (Integer.parseInt(row.get("ID_COMANDA").toString()), s);
+                
+                LineaComanda l = new LineaComanda (Integer.parseInt(row.get("ID_LINEA_COMANDA").toString()), c, p, Integer.parseInt(row.get("CANTIDAD").toString()), 0.00f, 0);
+                
+                listaLineas.add(l);
+            }    
+        } catch (Exception ex) {
+            System.out.println(ex); 
+        }
+
+        return listaLineas;
+    }
+    
+    public boolean actualizarEstadoLinea () {
+        boolean exito = true;
+    
+        try {
+            String sql = "UPDATE LINEAS_COMANDAS SET SERVIDO = SERVIDO + 1 WHERE ID_LINEA_COMANDA = " + getIdLineaComanda();
+            
+            Agente a = Agente.getAgente();
+            a.update(sql);   
+        } catch (Exception ex) {
+            System.out.println(ex);
+            exito = false;
+        }
+        
+        return exito;
+    }
+    
+    
+    
 }

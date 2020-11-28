@@ -13,6 +13,11 @@ public class Comanda {
     private Servicio servicio;
     private MetodoPago metodoPago;
 
+    public Comanda (int idComanda, Servicio s) {
+        this.idComanda = idComanda;
+        this.servicio = s;
+    }
+    
     public Comanda (Servicio s) {
         this.servicio = s;
     }
@@ -140,5 +145,44 @@ public class Comanda {
         }
          
         return exito;
-    }     
+    }  
+    
+    public boolean updateServicioComanda () {
+        boolean exito = true;
+        
+        try {
+            String sql = "UPDATE SERVICIOS \n" +
+                            "    SET ESTADO = 'SERVIDOS' \n" +
+                            "    WHERE ID_SERVICIO = (\n" +
+                            "        SELECT\n" +
+                            "            \"A2\".\"ID_SERVICIO\" \"ID_SERVICIO\"\n" +
+                            "        FROM\n" +
+                            "            \"ISO2\".\"COMANDAS\"          \"A2\",\n" +
+                            "            \"ISO2\".\"LINEAS_COMANDAS\"   \"A1\"\n" +
+                            "        WHERE\n" +
+                            "            \"A1\".\"ID_COMANDA\" = " + getIdComanda() + "\n" +
+                            "            AND \"A1\".\"SERVIDO\" = 2\n" +
+                            "            AND \"A1\".\"ID_COMANDA\" = \"A2\".\"ID_COMANDA\"\n" +
+                            "        GROUP BY\n" +
+                            "            \"A2\".\"ID_SERVICIO\"\n" +
+                            "        HAVING\n" +
+                            "            COUNT(*) = (\n" +
+                            "                SELECT\n" +
+                            "                    COUNT(*) \"TOTAL_LINEAS\"\n" +
+                            "                FROM\n" +
+                            "                    \"ISO2\".\"LINEAS_COMANDAS\" \"A3\"\n" +
+                            "                WHERE\n" +
+                            "                    \"A3\".\"ID_COMANDA\" = " + getIdComanda() + "\n" +
+                            "            ))";
+            
+            Agente a = Agente.getAgente();
+            a.update(sql);
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            exito = false;
+        }
+         
+        return exito;
+    }    
 }

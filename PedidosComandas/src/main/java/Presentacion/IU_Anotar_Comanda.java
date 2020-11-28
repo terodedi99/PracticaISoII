@@ -370,7 +370,7 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
             
             boolean exito = GestorComandas.insertarComanda(comanda, lineasComanda);
             if (exito) {
-                GestorComandas.cambiarEstadoServicio(Integer.parseInt(txtServicio.getText()), "ESPERANDO_LA_CUENTA");
+                GestorComandas.cambiarEstadoServicio(Integer.parseInt(txtServicio.getText()), "EN_ESPERA_DE_COMIDA");
                 GestorComandas.actualizarStock(lineasComanda);
                 
                 this.setVisible(false);
