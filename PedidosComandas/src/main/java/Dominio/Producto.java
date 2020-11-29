@@ -1,6 +1,7 @@
 package Dominio;
 
 import Persistencia.Agente;
+import Presentacion.IU_Gestion_Comandas;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,28 +68,32 @@ public class Producto {
         
         public static ArrayList<Producto> readProductos() {
             ArrayList<Producto> listaProductos = new ArrayList<>();
+            int idRestaurante = IU_Gestion_Comandas.sesionEmpleado.getnRestaurante().getId();
 
             try {
                 String sql = "SELECT\n" +
-                    "    \"A3\".\"ID_PRODUCTO\"            \"ID_PRODUCTO\",\n" +
-                    "    \"A3\".\"DESCRIPCION_PRODUCTO\"   \"DESCRIPCION_PRODUCTO\",\n" +
-                    "    \"A3\".\"TIPO_PRODUCTO\"          \"TIPO_PRODUCTO\",\n" +
-                    "    \"A3\".\"PRECIO\"                 \"PRECIO\",\n" +
-                    "    MIN(trunc(\"A1\".\"CANTIDAD\" / \"A2\".\"CANTIDAD_ELABORACION\", 0)) \"PLATOS_DISPONIBLES\"\n" +
+                    "    \"A4\".\"ID_PRODUCTO\"            \"ID_PRODUCTO\",\n" +
+                    "    \"A4\".\"DESCRIPCION_PRODUCTO\"   \"DESCRIPCION_PRODUCTO\",\n" +
+                    "    \"A4\".\"TIPO_PRODUCTO\"          \"TIPO_PRODUCTO\",\n" +
+                    "    \"A4\".\"PRECIO\"                 \"PRECIO\",\n" +
+                    "    MIN(trunc(\"A1\".\"CANTIDAD\" / \"A3\".\"CANTIDAD_ELABORACION\", 0)) \"PLATOS_DISPONIBLES\"\n" +
                     "FROM\n" +
-                    "    \"ISO2\".\"PRODUCTOS\"       \"A3\",\n" +
-                    "    \"ISO2\".\"ELABORACIONES\"   \"A2\",\n" +
-                    "    \"ISO2\".\"INGREDIENTES\"    \"A1\"\n" +
+                    "    \"ISO2\".\"PRODUCTOS\"                   \"A4\",\n" +
+                    "    \"ISO2\".\"ELABORACIONES\"               \"A3\",\n" +
+                    "    \"ISO2\".\"INGREDIENTES\"                \"A2\",\n" +
+                    "    \"ISO2\".\"INGREDIENTES_RESTAURANTES\"   \"A1\"\n" +
                     "WHERE\n" +
-                    "    \"A3\".\"ID_PRODUCTO\" = \"A2\".\"ID_PRODUCTO\"\n" +
+                    "    \"A1\".\"ID_RESTAURANTE\" = " + idRestaurante + "\n" +
+                    "    AND \"A4\".\"ID_PRODUCTO\" = \"A3\".\"ID_PRODUCTO\"\n" +
+                    "    AND \"A3\".\"ID_INGREDIENTE\" = \"A2\".\"ID_INGREDIENTE\"\n" +
                     "    AND \"A2\".\"ID_INGREDIENTE\" = \"A1\".\"ID_INGREDIENTE\"\n" +
                     "GROUP BY\n" +
-                    "    \"A3\".\"ID_PRODUCTO\",\n" +
-                    "    \"A3\".\"DESCRIPCION_PRODUCTO\",\n" +
-                    "    \"A3\".\"TIPO_PRODUCTO\",\n" +
-                    "    \"A3\".\"PRECIO\"\n" +
+                    "    \"A4\".\"ID_PRODUCTO\",\n" +
+                    "    \"A4\".\"DESCRIPCION_PRODUCTO\",\n" +
+                    "    \"A4\".\"TIPO_PRODUCTO\",\n" +
+                    "    \"A4\".\"PRECIO\"\n" +
                     "ORDER BY\n" +
-                    "    \"A3\".\"ID_PRODUCTO\"";
+                    "    \"A4\".\"ID_PRODUCTO\"";
 
                 Agente a = Agente.getAgente();
                 ArrayList result = a.select(sql);

@@ -9,6 +9,10 @@ import Dominio.Empleado;
 import Dominio.GestorLineasComanda;
 import Dominio.LineaComanda;
 import Dominio.Restaurante;
+import Persistencia.Agente;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
@@ -19,6 +23,7 @@ import javax.swing.table.TableColumn;
  */
 public class IU_Lineas_Empleado extends javax.swing.JFrame {
 
+    private final WindowListener exitListener;
     public static Empleado sesionEmpleado;
     private static Empleado[] empleadosPrueba;
     private ModeloTabla modelo;
@@ -27,6 +32,19 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
      * Creates new form IU_Lineas_Empleado
      */
     public IU_Lineas_Empleado() {
+        this.exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    Agente.getAgente().desconectar();
+                } catch (Exception ex) {
+                    System.out.println("ERROR AL DESCONECTAR LA BASE DE DATOS");
+                }
+                cerrar();
+            }
+        };
+        
+        
         empleadosPrueba = new Empleado[3];
         empleadosPrueba[0] = new Empleado (1, "11111111A", "CAMARERO", "1", 926123456, Empleado.Rol.CAMARERO, new Restaurante(1));
         empleadosPrueba[1] = new Empleado (4, "44444444D", "CAMARERO", "DE BARRA", 926123459, Empleado.Rol.CAMARERO_BARRA, new Restaurante(1));
@@ -48,6 +66,10 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
         //Ajustes de la tabla
         tablaLineasPendientes.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos();
+    }
+    
+    private void cerrar() {
+        System.exit(0);
     }
     
     private void cargarTabla() {

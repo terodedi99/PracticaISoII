@@ -9,6 +9,10 @@ import Dominio.Empleado;
 import Dominio.GestorComandas;
 import Dominio.Restaurante;
 import Dominio.Servicio;
+import Persistencia.Agente;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import javax.swing.table.TableColumn;
 
 public class IU_Gestion_Comandas extends javax.swing.JFrame {
 
+    private final WindowListener exitListener;
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
     
@@ -25,6 +30,19 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
      * Creates new form IU_Gestion_Comandas
      */
     public IU_Gestion_Comandas() {
+        this.exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    Agente.getAgente().desconectar();
+                } catch (Exception ex) {
+                    System.out.println("ERROR AL DESCONECTAR LA BASE DE DATOS");
+                }
+                cerrar();
+            }
+        };
+        
+        
         //Se establece el empleado hasta que tengamos un sistema de login
         sesionEmpleado = new Empleado (1, "11111111A", "CAMARERO", "1", 926123456, Empleado.Rol.CAMARERO, new Restaurante(1));
         
@@ -40,6 +58,10 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         //Ajustes de la tabla
         tablaServicios.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos(); 
+    }
+    
+    private void cerrar() {
+        System.exit(0);
     }
     
     private void cargarTabla() {
