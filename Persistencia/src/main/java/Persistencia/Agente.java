@@ -18,7 +18,7 @@ public class Agente {
     protected Connection mBD;
     
     //Atributos pertenecientes a la conexión
-    private static final String IP = "localhost";
+    private static final String IP = "20.49.186.234";
     private static final String NUMPUERTO="1521";
     private static final String NOMBREUSUARIO="ISO2";
     private static final String CONTRASENAUSUARIO="ISO2";
