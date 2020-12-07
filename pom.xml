@@ -9,6 +9,7 @@
         <module>Persistencia</module>
         <module>ReservaMesas</module>
         <module>PedidosComandas</module>
+        <module>AlmacenIngredientes</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
