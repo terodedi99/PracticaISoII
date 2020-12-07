@@ -13,6 +13,7 @@ public class Producto {
 	private float precio;
         
         private int platosDisponibles;
+        private int platosPreparados;
 
         public Producto(int idProducto, String descripcionProducto, String tipoProducto, float precio) {
             this.idProducto = idProducto;
@@ -64,6 +65,14 @@ public class Producto {
 
         public void setPlatosDisponibles(int platosDisponibles) {
             this.platosDisponibles = platosDisponibles;
+        }
+
+        public int getPlatosPreparados() {
+            return platosPreparados;
+        }
+
+        public void setPlatosPreparados(int platosPreparados) {
+            this.platosPreparados = platosPreparados;
         }
         
         public static ArrayList<Producto> readProductos() {
