@@ -17,9 +17,13 @@ public class Almacen {
     private int idAlmacenIngrediente;
     private Ingrediente ingrediente;
     private Restaurante restaurante;
-    private int cantidad;
+    private float cantidad;
 
-    public Almacen(int idAlmacenIngrediente, Ingrediente ingrediente, Restaurante restaurante, int cantidad) {
+    public Almacen (Restaurante r) {
+        this.restaurante = r;
+    }
+    
+    public Almacen(int idAlmacenIngrediente, Ingrediente ingrediente, Restaurante restaurante, float cantidad) {
         this.idAlmacenIngrediente = idAlmacenIngrediente;
         this.ingrediente = ingrediente;
         this.restaurante = restaurante;
@@ -50,11 +54,11 @@ public class Almacen {
         this.restaurante = restaurante;
     }
 
-    public int getCantidad() {
+    public float getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
     }
     
@@ -104,6 +108,88 @@ public class Almacen {
         }
 
         return listaProductos;
+    }
+    
+    public static ArrayList<Elaboracion> selectElaboracionesProducto (int idProducto) {
+        ArrayList<Elaboracion> listaElaboraciones = new ArrayList<>();
+
+        try {
+            String sql = "SELECT\n" +
+                "    \"A1\".\"QCSJ_C000000000300001_3\"     \"ID_INGREDIENTE\",\n" +
+                "    \"A1\".\"DESCRIPCION_INGREDIENTE_4\"   \"DESCRIPCION_INGREDIENTE\",\n" +
+                "    \"A1\".\"CANTIDAD_ELABORACION_2\"      \"CANTIDAD_ELABORACION\",\n" +
+                "    \"A1\".\"UNIDAD_5\"                    \"UNIDAD\"\n" +
+                "FROM\n" +
+                "    (\n" +
+                "        SELECT\n" +
+                "            \"A3\".\"ID_PRODUCTO\"               \"ID_PRODUCTO_0\",\n" +
+                "            \"A3\".\"ID_INGREDIENTE\"            \"QCSJ_C000000000300000\",\n" +
+                "            \"A3\".\"CANTIDAD_ELABORACION\"      \"CANTIDAD_ELABORACION_2\",\n" +
+                "            \"A2\".\"ID_INGREDIENTE\"            \"QCSJ_C000000000300001_3\",\n" +
+                "            \"A2\".\"DESCRIPCION_INGREDIENTE\"   \"DESCRIPCION_INGREDIENTE_4\",\n" +
+                "            \"A2\".\"UNIDAD\"                    \"UNIDAD_5\"\n" +
+                "        FROM\n" +
+                "            \"ISO2\".\"ELABORACIONES\"   \"A3\",\n" +
+                "            \"ISO2\".\"INGREDIENTES\"    \"A2\"\n" +
+                "        WHERE\n" +
+                "            \"A3\".\"ID_INGREDIENTE\" = \"A2\".\"ID_INGREDIENTE\"\n" +
+                "    ) \"A1\"\n" +
+                "WHERE\n" +
+                "    \"A1\".\"ID_PRODUCTO_0\" = " + idProducto;
+
+            Agente a = Agente.getAgente();
+            ArrayList result = a.select(sql);
+
+            for (int i = 0; i < result.size(); i++) {
+                HashMap row = (HashMap) result.get(i);
+                Ingrediente ingr = new Ingrediente (Integer.parseInt(row.get("ID_INGREDIENTE").toString()), row.get("DESCRIPCION_INGREDIENTE").toString(), 0, row.get("UNIDAD").toString(), 0);
+                Elaboracion e = new Elaboracion (ingr, Float.parseFloat(row.get("CANTIDAD_ELABORACION").toString()));
+                
+                listaElaboraciones.add(e);
+            }    
+        } catch (Exception ex) {
+            System.out.println(ex); 
+        }
+
+        return listaElaboraciones;
+    }
+    
+    public boolean updateIngredientesRestaurante(int idProducto, int incrementoStock) {
+        boolean actualizado = true;
+        
+        try {
+            String sql = "UPDATE INGREDIENTES_RESTAURANTES IR\n" +
+                "    SET IR.CANTIDAD = IR.CANTIDAD + ((SELECT E.CANTIDAD_ELABORACION FROM ELABORACIONES E WHERE E.ID_INGREDIENTE = IR.ID_INGREDIENTE AND E.ID_PRODUCTO = " + idProducto + ")*" + incrementoStock + ") \n" +
+                "    WHERE IR.ID_RESTAURANTE = " + getRestaurante().getId() + "\n" +
+                "        AND IR.ID_INGREDIENTE IN (\n" +
+                "            SELECT\n" +
+                "                \"A1\".\"QCSJ_C000000000300001_3\" \"ID_INGREDIENTE\"\n" +
+                "            FROM\n" +
+                "                (\n" +
+                "                    SELECT\n" +
+                "                        \"A3\".\"ID_PRODUCTO\"               \"ID_PRODUCTO_0\",\n" +
+                "                        \"A3\".\"ID_INGREDIENTE\"            \"QCSJ_C000000000300000\",\n" +
+                "                        \"A3\".\"CANTIDAD_ELABORACION\"      \"CANTIDAD_ELABORACION_2\",\n" +
+                "                        \"A2\".\"ID_INGREDIENTE\"            \"QCSJ_C000000000300001_3\",\n" +
+                "                        \"A2\".\"DESCRIPCION_INGREDIENTE\"   \"DESCRIPCION_INGREDIENTE_4\",\n" +
+                "                        \"A2\".\"UNIDAD\"                    \"UNIDAD_5\"\n" +
+                "                    FROM\n" +
+                "                        \"ISO2\".\"ELABORACIONES\"   \"A3\",\n" +
+                "                        \"ISO2\".\"INGREDIENTES\"    \"A2\"\n" +
+                "                    WHERE\n" +
+                "                        \"A3\".\"ID_INGREDIENTE\" = \"A2\".\"ID_INGREDIENTE\"\n" +
+                "                ) \"A1\"\n" +
+                "            WHERE\n" +
+                "                \"A1\".\"ID_PRODUCTO_0\" = " + idProducto + ")";
+            
+            Agente a = Agente.getAgente(); 
+            a.update(sql);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            actualizado = false;
+        }
+        
+        return actualizado;
     }
     
 }

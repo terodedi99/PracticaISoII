@@ -12,9 +12,10 @@ import Dominio.Restaurante;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-public class PlatosRestaurante extends javax.swing.JFrame {
+public class IU_Platos_Restaurante extends javax.swing.JFrame {
 
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
@@ -22,7 +23,7 @@ public class PlatosRestaurante extends javax.swing.JFrame {
     /**
      * Creates new form PlatosRestaurante
      */
-    public PlatosRestaurante() {
+    public IU_Platos_Restaurante() {
         //Se establece el empleado hasta que tengamos un sistema de login
         sesionEmpleado = new Empleado (3, "66666666F", "ALMACEN", "1", 926123451, Empleado.Rol.ALMACEN, new Restaurante(1));
         
@@ -71,7 +72,7 @@ public class PlatosRestaurante extends javax.swing.JFrame {
         
         ArrayList<Producto> lista = GestorAlmacen.readProductosCantidad (this.seleccionFecha.getDate(), sesionEmpleado);
         
-        Object[] obj = new Object[5];
+        Object[] obj = new Object[4];
         for (int i = 0; i < lista.size(); i++) {
             Producto p = lista.get(i);
             
@@ -112,6 +113,11 @@ public class PlatosRestaurante extends javax.swing.JFrame {
 
         btnActualizarAlmacen.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnActualizarAlmacen.setText("ACTUALIZAR ALMACEN");
+        btnActualizarAlmacen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarAlmacenActionPerformed(evt);
+            }
+        });
 
         seleccionFecha.setDateFormatString("dd/MM/yyyy");
 
@@ -179,6 +185,20 @@ public class PlatosRestaurante extends javax.swing.JFrame {
         cargarDatos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnActualizarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAlmacenActionPerformed
+        int filaSeleccionada = tablaProductos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            this.setVisible(false);
+            IU_Platos_Stock formProductos = new IU_Platos_Stock();
+            formProductos.setFormProductosRestaurante(this);
+            formProductos.setVisible(true);
+            formProductos.setDatosProducto(tablaProductos.getValueAt(filaSeleccionada, 0).toString(), tablaProductos.getValueAt(filaSeleccionada, 1).toString());
+            formProductos.cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnActualizarAlmacenActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -196,20 +216,21 @@ public class PlatosRestaurante extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PlatosRestaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PlatosRestaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PlatosRestaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PlatosRestaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlatosRestaurante().setVisible(true);
+                new IU_Platos_Restaurante().setVisible(true);
             }
         });
     }
