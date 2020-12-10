@@ -154,6 +154,39 @@ public class Almacen {
         return listaElaboraciones;
     }
     
+    public static ArrayList<Ingrediente> selectIngredientesStock (Restaurante r) {
+        ArrayList<Ingrediente> listaIngredientes = new ArrayList<>();
+
+        try {
+            String sql = "SELECT\n" +
+                "    \"A2\".\"ID_INGREDIENTE\"            \"ID_INGREDIENTE\",\n" +
+                "    \"A2\".\"DESCRIPCION_INGREDIENTE\"   \"DESCRIPCION_INGREDIENTE\",\n" +
+                "    \"A2\".\"STOCK_IDEAL\"               \"STOCK_IDEAL\",\n" +
+                "    \"A1\".\"CANTIDAD\"                  \"CANTIDAD\",\n" +
+                "    \"A2\".\"UNIDAD\"                    \"UNIDAD\"\n" +
+                "FROM\n" +
+                "    \"ISO2\".\"INGREDIENTES\"                \"A2\",\n" +
+                "    \"ISO2\".\"INGREDIENTES_RESTAURANTES\"   \"A1\"\n" +
+                "WHERE\n" +
+                "    \"A1\".\"ID_RESTAURANTE\" = " + r.getId() + "\n" +
+                "    AND \"A2\".\"ID_INGREDIENTE\" = \"A1\".\"ID_INGREDIENTE\"";
+
+            Agente a = Agente.getAgente();
+            ArrayList result = a.select(sql);
+
+            for (int i = 0; i < result.size(); i++) {
+                HashMap row = (HashMap) result.get(i);
+                Ingrediente ingr = new Ingrediente (Integer.parseInt(row.get("ID_INGREDIENTE").toString()), row.get("DESCRIPCION_INGREDIENTE").toString(), Float.parseFloat(row.get("CANTIDAD").toString()), row.get("UNIDAD").toString(), Float.parseFloat(row.get("STOCK_IDEAL").toString()));
+                
+                listaIngredientes.add(ingr);
+            }    
+        } catch (Exception ex) {
+            System.out.println(ex); 
+        }
+
+        return listaIngredientes;
+    }
+    
     public boolean updateIngredientesRestaurante(int idProducto, int incrementoStock) {
         boolean actualizado = true;
         

@@ -18,6 +18,10 @@ public class GestorAlmacen {
         return Almacen.selectElaboracionesProducto(idProducto);
     }
     
+    public static ArrayList<Ingrediente> readIngredientesStock (Restaurante r){
+        return Almacen.selectIngredientesStock(r);
+    }
+    
     public static boolean incrementarStockIngredientes (Restaurante r, int idProducto, int incrementoStock) {
         Almacen a = new Almacen (r);
         return a.updateIngredientesRestaurante(idProducto, incrementoStock);

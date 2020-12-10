@@ -43,7 +43,7 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
         
         //Ajustes de la tabla
         tablaProductos.getTableHeader().setReorderingAllowed(false);
-        cargarTabla(); cargarDatos(); 
+        cargarTabla(); cargarDatos();
     }
 
     private void cargarTabla() {
@@ -102,6 +102,7 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
         btnActualizarAlmacen = new javax.swing.JButton();
         seleccionFecha = new com.toedter.calendar.JDateChooser();
         btnBuscar = new javax.swing.JButton();
+        btnIngredientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,6 +130,14 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
             }
         });
 
+        btnIngredientes.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnIngredientes.setText("MOSTRAR ALERTAS");
+        btnIngredientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngredientesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -138,13 +147,14 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnActualizarAlmacen)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(seleccionFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(seleccionFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnActualizarAlmacen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnIngredientes)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(298, 298, 298)
@@ -161,9 +171,12 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
                     .addComponent(seleccionFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(btnActualizarAlmacen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnActualizarAlmacen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnIngredientes))
                 .addContainerGap())
         );
 
@@ -198,6 +211,13 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnActualizarAlmacenActionPerformed
+
+    private void btnIngredientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngredientesActionPerformed
+        this.setVisible(false);
+        IU_Ingredientes_Stock formIngredientes = new IU_Ingredientes_Stock();
+        formIngredientes.setFormProductosRestaurante(this);
+        formIngredientes.setVisible(true);
+    }//GEN-LAST:event_btnIngredientesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,6 +258,7 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarAlmacen;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnIngredientes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitutlo;
