@@ -4,7 +4,7 @@
     <parent>
         <groupId>es.esi.uclm.ISOFT2.C05</groupId>
         <artifactId>ComidasCinquillo</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
     <artifactId>Persistencia</artifactId>
     <version>1.0.0</version>
