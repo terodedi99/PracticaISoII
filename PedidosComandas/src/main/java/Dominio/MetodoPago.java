@@ -25,4 +25,9 @@ public class MetodoPago {
         public void setDescripcionPago(String descripcionPago) {
             this.descripcionPago = descripcionPago;
         }     
+
+    @Override
+    public String toString() {
+        return descripcionPago;
+    }
 }
