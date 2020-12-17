@@ -4,9 +4,9 @@
     <parent>
         <groupId>es.esi.uclm.ISOFT2.C05</groupId>
         <artifactId>ComidasCinquillo</artifactId>
-        <version>0.4.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <artifactId>ReservaMesas</artifactId>
     <packaging>jar</packaging>
     <dependencies>

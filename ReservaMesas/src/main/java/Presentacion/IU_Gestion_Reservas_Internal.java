@@ -8,7 +8,6 @@ package Presentacion;
 import Dominio.Empleado;
 import Dominio.GestorServicio;
 import Dominio.Pase;
-import Dominio.Restaurante;
 import Dominio.Servicio;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.text.DateFormat;
@@ -18,23 +17,22 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-public class IU_Gestion_Reservas extends javax.swing.JFrame {
+
+public class IU_Gestion_Reservas_Internal extends javax.swing.JInternalFrame {
 
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
     private Pase[] pases;
     
     /**
-     * Creates new form IU_Gestion_Reservas
+     * Creates new form IU_Gestion_Reservas_Internal
      */
-    public IU_Gestion_Reservas() {
-        //Se establece el empleado hasta que tengamos un sistema de login
-        sesionEmpleado = new Empleado (3, "33333333C", "JEFE", "DE SALA", 926123458, Empleado.Rol.JEFE_DE_SALA, new Restaurante(1));
-        
+    public IU_Gestion_Reservas_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
         initComponents();
+        
         
         //Establecer Pases para Combobox
         this.pases = new Pase[3];
@@ -51,7 +49,6 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("GESTIÓN DE RESERVAS");
-        this.setLocationRelativeTo(null);
         
         //Ajustes de la tabla
         tablaServicios.getTableHeader().setReorderingAllowed(false);
@@ -151,8 +148,6 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         seleccionFecha = new com.toedter.calendar.JDateChooser();
         cboPases = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("GESTIÓN DE RESERVAS");
 
@@ -229,7 +224,7 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
                     .addComponent(btnReservarMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelarReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAsignarCamarero))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addGap(18, 45, Short.MAX_VALUE)
                 .addGroup(panelReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBuscarServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(seleccionFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -257,11 +252,10 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         int filaSeleccionada = tablaServicios.getSelectedRow();
         if (filaSeleccionada >= 0) {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("LIBRE")) {
-                this.setVisible(false);
-                IU_Reservar_Mesa reservarMesa = new IU_Reservar_Mesa();
+                IU_Reservar_Mesa_Dialog reservarMesa = new IU_Reservar_Mesa_Dialog(null, true);
                 reservarMesa.setFormGestionReservas(this);
-                reservarMesa.setVisible(true);
                 reservarMesa.setDatosServicio(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString());
+                reservarMesa.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "EL ESTADO DEL SERVICIO DEBE SER LIBRE PARA PODER SER RESERVADO", "NO SE PUEDE RESERVAR ESA MESA", JOptionPane.ERROR_MESSAGE);
             }
@@ -287,12 +281,11 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
     private void btnAsignarCamareroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarCamareroActionPerformed
         int filaSeleccionada = tablaServicios.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            this.setVisible(false);
-            IU_Asignar_Camarero asignarCamarero = new IU_Asignar_Camarero();
+            IU_Asignar_Camarero_Dialog asignarCamarero = new IU_Asignar_Camarero_Dialog(null, true);
             asignarCamarero.setFormGestionReservas(this);
-            asignarCamarero.setVisible(true);
             asignarCamarero.setDatosServicio(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString());
             asignarCamarero.cargarServicio();
+            asignarCamarero.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -306,40 +299,6 @@ public class IU_Gestion_Reservas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarServicioActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Reservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Reservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Reservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Reservas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Gestion_Reservas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignarCamarero;

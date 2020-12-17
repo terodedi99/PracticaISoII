@@ -9,30 +9,21 @@ import Dominio.Empleado;
 import Dominio.GestorCamarero;
 import Dominio.GestorServicio;
 import Dominio.Servicio;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-public class IU_Asignar_Camarero extends javax.swing.JFrame {
 
-    private final WindowListener exitListener;
-    private IU_Gestion_Reservas formGestion;
+public class IU_Asignar_Camarero_Dialog extends javax.swing.JDialog {
+
+    private IU_Gestion_Reservas_Internal formGestion;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Asignar_Camarero
+     * Creates new form IU_Asignar_Camarero_Dialog
      */
-    public IU_Asignar_Camarero() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formGestion.setVisible(true);
-                cerrar();
-            }
-        };
+    public IU_Asignar_Camarero_Dialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
@@ -40,14 +31,13 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
         initComponents();
         
         this.setTitle("ASIGNAR CAMARERO");
-        this.setLocationRelativeTo(null); 
-        this.addWindowListener(exitListener);
+        this.setLocationRelativeTo(parent); 
         
         //Ajustes de la tabla
         tableCamareros.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos(); 
     }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_CAMARERO", "DNI", "NOMBRE", "APELLIDOS", "TELEFONO"};
         
@@ -75,7 +65,7 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         
-        ArrayList<Empleado> lista = GestorCamarero.buscarListaCamareros(IU_Gestion_Reservas.sesionEmpleado.getnRestaurante());
+        ArrayList<Empleado> lista = GestorCamarero.buscarListaCamareros(IU_Gestion_Reservas_Internal.sesionEmpleado.getnRestaurante());
         
         Object[] obj = new Object[5];
         for (int i = 0; i < lista.size(); i++) {
@@ -105,7 +95,7 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
         this.dispose();
     }
     
-    public void setFormGestionReservas (IU_Gestion_Reservas formGestion) {
+    public void setFormGestionReservas (IU_Gestion_Reservas_Internal formGestion) {
         this.formGestion = formGestion;
     }
     
@@ -144,7 +134,7 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableCamareros = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("ASIGNAR CAMARERO");
@@ -265,7 +255,7 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAsignar)
                 .addGap(22, 22, 22))
         );
@@ -290,7 +280,6 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
             boolean exito = GestorServicio.asignarCamareroAServicio(Integer.parseInt(txtIdServicio.getText()), cboNumComensales.getSelectedItem().toString(), txtComentarios.getText(), Integer.parseInt(tableCamareros.getValueAt(filaSeleccionada, 0).toString()));
             if (exito) {
                 this.setVisible(false);
-                formGestion.setVisible(true);
                 formGestion.cargarDatos();
                 cerrar();
             } else {
@@ -318,20 +307,27 @@ public class IU_Asignar_Camarero extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Asignar_Camarero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Asignar_Camarero_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Asignar_Camarero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Asignar_Camarero_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Asignar_Camarero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Asignar_Camarero_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Asignar_Camarero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Asignar_Camarero_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IU_Asignar_Camarero().setVisible(true);
+                IU_Asignar_Camarero_Dialog dialog = new IU_Asignar_Camarero_Dialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

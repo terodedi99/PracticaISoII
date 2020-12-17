@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
-  <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
-  </Properties>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -23,7 +19,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelReservas" min="-2" max="-2" attributes="0"/>
+          <Component id="panelReservas" alignment="0" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -38,24 +34,24 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
+                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnReservarMesa" max="32767" attributes="0"/>
-                              <Component id="cboPases" max="32767" attributes="0"/>
+                              <Component id="btnReservarMesa" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cboPases" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="169" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnCancelarReserva" pref="318" max="32767" attributes="0"/>
-                              <Component id="seleccionFecha" max="32767" attributes="0"/>
+                              <Component id="btnCancelarReserva" alignment="0" pref="318" max="32767" attributes="0"/>
+                              <Component id="seleccionFecha" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="169" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnAsignarCamarero" max="32767" attributes="0"/>
-                              <Component id="btnBuscarServicio" max="32767" attributes="0"/>
+                              <Component id="btnAsignarCamarero" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnBuscarServicio" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -79,10 +75,10 @@
                       <Component id="btnCancelarReserva" alignment="3" max="32767" attributes="0"/>
                       <Component id="btnAsignarCamarero" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="92" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" pref="45" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="btnBuscarServicio" min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="seleccionFecha" max="32767" attributes="0"/>
+                      <Component id="btnBuscarServicio" alignment="0" min="-2" pref="34" max="-2" attributes="0"/>
+                      <Component id="seleccionFecha" alignment="0" max="32767" attributes="0"/>
                       <Component id="cboPases" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>

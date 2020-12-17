@@ -6,39 +6,28 @@
 package Presentacion;
 
 import Dominio.GestorServicio;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
-public class IU_Reservar_Mesa extends javax.swing.JFrame {
 
-    private final WindowListener exitListener;
-    private IU_Gestion_Reservas formGestion;
+public class IU_Reservar_Mesa_Dialog extends javax.swing.JDialog {
+
+    private IU_Gestion_Reservas_Internal formGestion;
     
     /**
-     * Creates new form IU_Reservar_Mesa
+     * Creates new form IU_Reservar_Mesa_Dialog
      */
-    public IU_Reservar_Mesa() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formGestion.setVisible(true);
-                cerrar();
-            }
-        };
-        
+    public IU_Reservar_Mesa_Dialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
         
         this.setTitle("RESERVAR MESA");
-        this.setLocationRelativeTo(null); 
-        this.addWindowListener(exitListener);
+        this.setLocationRelativeTo(parent); 
     }
-    
+
     private void cerrar() {
         this.dispose();
     }
     
-    public void setFormGestionReservas (IU_Gestion_Reservas formGestion) {
+    public void setFormGestionReservas (IU_Gestion_Reservas_Internal formGestion) {
         this.formGestion = formGestion;
     }
     
@@ -75,7 +64,7 @@ public class IU_Reservar_Mesa extends javax.swing.JFrame {
         txtTurno = new javax.swing.JTextField();
         txtFecha = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("RESERVA MESA");
@@ -180,7 +169,7 @@ public class IU_Reservar_Mesa extends javax.swing.JFrame {
                 .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFecha)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(panelReservaMesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumComensales)
                     .addComponent(cboNumComensales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -211,7 +200,6 @@ public class IU_Reservar_Mesa extends javax.swing.JFrame {
         boolean exito = GestorServicio.reservarServicio(Integer.parseInt(this.txtIdServicio.getText()), this.cboNumComensales.getSelectedItem().toString(), this.txtComentarios.getText());
         if (exito) {
             this.setVisible(false);
-            formGestion.setVisible(true);
             formGestion.cargarDatos();
             cerrar();
         }
@@ -234,20 +222,27 @@ public class IU_Reservar_Mesa extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Reservar_Mesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Reservar_Mesa_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Reservar_Mesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Reservar_Mesa_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Reservar_Mesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Reservar_Mesa_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Reservar_Mesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Reservar_Mesa_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IU_Reservar_Mesa().setVisible(true);
+                IU_Reservar_Mesa_Dialog dialog = new IU_Reservar_Mesa_Dialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
