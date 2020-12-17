@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.esi.uclm.ISOFT2.C05</groupId>
     <artifactId>ComidasCinquillo</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>Persistencia</module>
@@ -12,6 +12,7 @@
         <module>AlmacenIngredientes</module>
         <module>PagoLiberacionMesa</module>
         <module>Estadisticas</module>
+        <module>Login</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
