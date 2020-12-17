@@ -7,30 +7,20 @@ package Presentacion;
 
 import Dominio.Elaboracion;
 import Dominio.GestorAlmacen;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-public class IU_Platos_Stock extends javax.swing.JFrame {
+public class IU_Platos_Stock_Dialog extends javax.swing.JDialog {
 
-    private final WindowListener exitListener;
-    private IU_Platos_Restaurante formProductos;
     private ModeloTabla modelo;
     
+    
     /**
-     * Creates new form PlatosStock
+     * Creates new form IU_Platos_Stock_Dialog
      */
-    public IU_Platos_Stock() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formProductos.setVisible(true);
-                cerrar();
-            }
-        };
+    public IU_Platos_Stock_Dialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
@@ -38,20 +28,15 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
         initComponents();
         
         this.setTitle("APROVISIONAMIENTO PRODUCTOS");
-        this.setLocationRelativeTo(null); 
-        this.addWindowListener(exitListener);
+        this.setLocationRelativeTo(parent); 
         
         //Ajustes de la tabla
         tablaIngredientes.getTableHeader().setReorderingAllowed(false);
-        cargarTabla(); //cargarDatos(); 
+        cargarTabla(); //cargarDatos();
     }
-    
+
     private void cerrar() {
         this.dispose();
-    }
-    
-    public void setFormProductosRestaurante (IU_Platos_Restaurante formProductos) {
-        this.formProductos = formProductos;
     }
     
     public void setDatosProducto (String idProducto, String descripcion) {
@@ -101,7 +86,7 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
             modelo.addRow(obj);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,7 +108,7 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
         txtDescripcion = new javax.swing.JTextField();
         btnConfirmar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("ACTUALIZAR STOCK PRODUCTO");
@@ -189,7 +174,7 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(btnConfirmar)))
-                        .addGap(0, 136, Short.MAX_VALUE)))
+                        .addGap(0, 79, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -211,7 +196,7 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
                     .addComponent(lblCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnConfirmar)
                 .addGap(12, 12, 12))
         );
@@ -220,7 +205,9 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,18 +217,6 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        int stock = txtStock.getValue();
-        if (stock > 0) {
-            if (GestorAlmacen.incrementarStockIngredientes(IU_Platos_Restaurante.sesionEmpleado.getnRestaurante(), Integer.parseInt(txtId.getText()), stock)) {
-                formProductos.setVisible(true);
-                cerrar();
-            } else {
-                JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL ACTUALIZAR EL STOCK", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnConfirmarActionPerformed
-
     private void txtStockPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtStockPropertyChange
         int stock = txtStock.getValue();
         for (int i = 0; i < tablaIngredientes.getRowCount(); i++) {
@@ -249,6 +224,17 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
             tablaIngredientes.setValueAt(cantidad_compra, i, 4);
         }
     }//GEN-LAST:event_txtStockPropertyChange
+
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        int stock = txtStock.getValue();
+        if (stock > 0) {
+            if (GestorAlmacen.incrementarStockIngredientes(IU_Platos_Restaurante_Internal.sesionEmpleado.getnRestaurante(), Integer.parseInt(txtId.getText()), stock)) {
+                cerrar();
+            } else {
+                JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL ACTUALIZAR EL STOCK", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,21 +253,27 @@ public class IU_Platos_Stock extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Stock.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Stock_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Stock.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Stock_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Stock.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Stock_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Stock.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IU_Platos_Stock_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IU_Platos_Stock().setVisible(true);
+                IU_Platos_Stock_Dialog dialog = new IU_Platos_Stock_Dialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

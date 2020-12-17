@@ -8,25 +8,21 @@ package Presentacion;
 import Dominio.Empleado;
 import Dominio.GestorAlmacen;
 import Dominio.Producto;
-import Dominio.Restaurante;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-public class IU_Platos_Restaurante extends javax.swing.JFrame {
+public class IU_Platos_Restaurante_Internal extends javax.swing.JInternalFrame {
 
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
-     
+    
     /**
-     * Creates new form PlatosRestaurante
+     * Creates new form IU_Platos_Restaurante_Internal
      */
-    public IU_Platos_Restaurante() {
-        //Se establece el empleado hasta que tengamos un sistema de login
-        sesionEmpleado = new Empleado (3, "66666666F", "ALMACEN", "1", 926123451, Empleado.Rol.ALMACEN, new Restaurante(1));
-        
+    public IU_Platos_Restaurante_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
@@ -39,7 +35,6 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("ALMACEN");
-        this.setLocationRelativeTo(null);
         
         //Ajustes de la tabla
         tablaProductos.getTableHeader().setReorderingAllowed(false);
@@ -104,8 +99,6 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnIngredientes = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         lblTitutlo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitutlo.setText("PLATOS RESTAURANTE");
 
@@ -159,7 +152,7 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(298, 298, 298)
                 .addComponent(lblTitutlo)
-                .addContainerGap(308, Short.MAX_VALUE))
+                .addContainerGap(284, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,7 +163,7 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(seleccionFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnActualizarAlmacen)
@@ -194,72 +187,27 @@ public class IU_Platos_Restaurante extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        cargarDatos();
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void btnActualizarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAlmacenActionPerformed
         int filaSeleccionada = tablaProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
-            this.setVisible(false);
-            IU_Platos_Stock formProductos = new IU_Platos_Stock();
-            formProductos.setFormProductosRestaurante(this);
-            formProductos.setVisible(true);
+            IU_Platos_Stock_Dialog formProductos = new IU_Platos_Stock_Dialog(null, true);
             formProductos.setDatosProducto(tablaProductos.getValueAt(filaSeleccionada, 0).toString(), tablaProductos.getValueAt(filaSeleccionada, 1).toString());
             formProductos.cargarDatos();
+            formProductos.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnActualizarAlmacenActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        cargarDatos();
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     private void btnIngredientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngredientesActionPerformed
-        this.setVisible(false);
-        IU_Ingredientes_Stock formIngredientes = new IU_Ingredientes_Stock();
-        formIngredientes.setFormProductosRestaurante(this);
+        IU_Ingredientes_Stock_Dialog formIngredientes = new IU_Ingredientes_Stock_Dialog(null, true);
         formIngredientes.setVisible(true);
     }//GEN-LAST:event_btnIngredientesActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Platos_Restaurante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Platos_Restaurante().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarAlmacen;
