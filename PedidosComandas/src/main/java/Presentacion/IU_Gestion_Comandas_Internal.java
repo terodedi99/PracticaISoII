@@ -7,12 +7,7 @@ package Presentacion;
 
 import Dominio.Empleado;
 import Dominio.GestorComandas;
-import Dominio.Restaurante;
 import Dominio.Servicio;
-import Persistencia.Agente;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,32 +15,15 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 
-public class IU_Gestion_Comandas extends javax.swing.JFrame {
-
-    private final WindowListener exitListener;
+public class IU_Gestion_Comandas_Internal extends javax.swing.JInternalFrame {
+    
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Gestion_Comandas
+     * Creates new form IU_Gestion_Comandas_Internal
      */
-    public IU_Gestion_Comandas() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    Agente.getAgente().desconectar();
-                } catch (Exception ex) {
-                    System.out.println("ERROR AL DESCONECTAR LA BASE DE DATOS");
-                }
-                cerrar();
-            }
-        };
-        
-        
-        //Se establece el empleado hasta que tengamos un sistema de login
-        sesionEmpleado = new Empleado (1, "11111111A", "CAMARERO", "1", 926123456, Empleado.Rol.CAMARERO, new Restaurante(1));
-        
+    public IU_Gestion_Comandas_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
@@ -53,17 +31,12 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("GESTIÓN DE COMANDAS");
-        this.setLocationRelativeTo(null);
-        
+
         //Ajustes de la tabla
         tablaServicios.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos(); 
     }
-    
-    private void cerrar() {
-        System.exit(0);
-    }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_SERVICIO", "FECHA", "TURNO", "MESA", "ESTADO", "NUM_COMENSALES"};
         
@@ -111,7 +84,7 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
             modelo.addRow(obj);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,8 +100,6 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaServicios = new javax.swing.JTable();
         btnBuscarServicio = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("GESTIÓN DE COMANDAS");
@@ -179,7 +150,7 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
                 .addGroup(panelReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnotarComanda, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 25, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -202,17 +173,16 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         int filaSeleccionada = tablaServicios.getSelectedRow();
         if (filaSeleccionada >= 0) {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("OCUPADA") || tablaServicios.getValueAt(filaSeleccionada, 4).equals("PIDIENDO")) {
-                this.setVisible(false);
                 if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("OCUPADA")) {
                     boolean exito = GestorComandas.cambiarEstadoServicio(Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()), "PIDIENDO");
                     if (!exito) {
                         JOptionPane.showMessageDialog(null, "NO SE PUEDE CAMBIAR EL ESTADO A PIDIENDO", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                }   
-                IU_Anotar_Comanda anotarComanda = new IU_Anotar_Comanda();
+                    } 
+                }
+                IU_Anotar_Comanda_Dialog anotarComanda = new IU_Anotar_Comanda_Dialog(null, true);
                 anotarComanda.setFormGestionComandas(this);
-                anotarComanda.setVisible(true);
                 anotarComanda.setDatosComanda(tablaServicios.getValueAt(filaSeleccionada, 0).toString(), tablaServicios.getValueAt(filaSeleccionada, 2).toString(), tablaServicios.getValueAt(filaSeleccionada, 3).toString(), tablaServicios.getValueAt(filaSeleccionada, 1).toString(), tablaServicios.getValueAt(filaSeleccionada, 5).toString());
+                anotarComanda.setVisible(true);
             }
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "NO SE PUEDE ANOTAR UNA COMANDA", JOptionPane.ERROR_MESSAGE);
@@ -223,40 +193,6 @@ public class IU_Gestion_Comandas extends javax.swing.JFrame {
         cargarDatos();
     }//GEN-LAST:event_btnBuscarServicioActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Comandas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Comandas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Comandas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Gestion_Comandas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Gestion_Comandas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnotarComanda;

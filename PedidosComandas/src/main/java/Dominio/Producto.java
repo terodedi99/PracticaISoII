@@ -1,7 +1,7 @@
 package Dominio;
 
 import Persistencia.Agente;
-import Presentacion.IU_Gestion_Comandas;
+import Presentacion.IU_Gestion_Comandas_Internal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,7 +77,7 @@ public class Producto {
         
         public static ArrayList<Producto> readProductos() {
             ArrayList<Producto> listaProductos = new ArrayList<>();
-            int idRestaurante = IU_Gestion_Comandas.sesionEmpleado.getnRestaurante().getId();
+            int idRestaurante = IU_Gestion_Comandas_Internal.sesionEmpleado.getnRestaurante().getId();
 
             try {
                 String sql = "SELECT\n" +

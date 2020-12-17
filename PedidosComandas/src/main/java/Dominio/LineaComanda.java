@@ -1,8 +1,8 @@
 package Dominio;
 
 import Persistencia.Agente;
-import Presentacion.IU_Gestion_Comandas;
-import Presentacion.IU_Lineas_Empleado;
+import Presentacion.IU_Gestion_Comandas_Internal;
+import Presentacion.IU_Lineas_Empleado_Internal;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -80,7 +80,7 @@ public class LineaComanda {
     
     public boolean comprobarStockSuficiente () {
         boolean stockSuficiente = true;
-        int idRestaurante = IU_Gestion_Comandas.sesionEmpleado.getnRestaurante().getId();
+        int idRestaurante = IU_Gestion_Comandas_Internal.sesionEmpleado.getnRestaurante().getId();
         
         try {
             String sql = "SELECT\n" +
@@ -115,7 +115,7 @@ public class LineaComanda {
     
     public boolean actualizarStock() {
         boolean actualizado = true;
-        int idRestaurante = IU_Gestion_Comandas.sesionEmpleado.getnRestaurante().getId();
+        int idRestaurante = IU_Gestion_Comandas_Internal.sesionEmpleado.getnRestaurante().getId();
         
         try {
             String sql = "SELECT\n" +
@@ -174,7 +174,7 @@ public class LineaComanda {
     
     public static ArrayList<LineaComanda> readLineasComandaPendientes(int idEmpleado, String rolEmpleado) {
         ArrayList<LineaComanda> listaLineas = new ArrayList<>();
-        int idRestaurante = IU_Lineas_Empleado.sesionEmpleado.getnRestaurante().getId();
+        int idRestaurante = IU_Lineas_Empleado_Internal.sesionEmpleado.getnRestaurante().getId();
               
         try {
             String sql = "";

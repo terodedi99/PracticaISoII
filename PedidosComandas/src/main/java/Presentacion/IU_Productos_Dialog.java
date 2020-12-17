@@ -7,46 +7,36 @@ package Presentacion;
 
 import Dominio.GestorProducto;
 import Dominio.Producto;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 
-public class IU_Productos extends javax.swing.JFrame {
+public class IU_Productos_Dialog extends javax.swing.JDialog {
 
-    private final WindowListener exitListener;
-    private IU_Anotar_Linea_Comanda formAnotarLineaComanda;
+    private IU_Anotar_Linea_Comanda_Dialog formAnotarLineaComanda;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Productos
+     * Creates new form IU_Productos_Dialog
      */
-    public IU_Productos() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formAnotarLineaComanda.setVisible(true);
-                cerrar();
-            }
-        };
+    public IU_Productos_Dialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
         initComponents();
         
+        
         this.setTitle("PRODUCTOS");
-        this.setLocationRelativeTo(null); 
-        this.addWindowListener(exitListener);
+        this.setLocationRelativeTo(parent); 
         
         //Ajustes de la tabla
         tablaProductos.getTableHeader().setReorderingAllowed(false);
-        cargarTabla(); cargarDatos(); 
+        cargarTabla(); cargarDatos();
     }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_PRODUCTO", "DESCRIPCION", "TIPO_PRODUCTO", "PRECIO", "PLATOS_DISPONIBLES"};
         
@@ -90,14 +80,14 @@ public class IU_Productos extends javax.swing.JFrame {
         }
     }
     
-    public void setFormAnotarLineaComanda (IU_Anotar_Linea_Comanda formAnotarLineaComanda) {
+    public void setFormAnotarLineaComanda (IU_Anotar_Linea_Comanda_Dialog formAnotarLineaComanda) {
         this.formAnotarLineaComanda = formAnotarLineaComanda;
     }
     
     private void cerrar() {
         this.dispose();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -113,7 +103,7 @@ public class IU_Productos extends javax.swing.JFrame {
         tablaProductos = new javax.swing.JTable();
         btnConfirmar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("PRODUCTOS");
@@ -146,7 +136,7 @@ public class IU_Productos extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(btnConfirmar)))
-                        .addGap(0, 340, Short.MAX_VALUE)))
+                        .addGap(0, 312, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,14 +148,14 @@ public class IU_Productos extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnConfirmar)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,12 +170,53 @@ public class IU_Productos extends javax.swing.JFrame {
         if (filaSeleccionada >= 0) {
             this.setVisible(false);
             formAnotarLineaComanda.setInformacion(new Producto(Integer.parseInt(tablaProductos.getValueAt(filaSeleccionada, 0).toString()), tablaProductos.getValueAt(filaSeleccionada, 1).toString(), tablaProductos.getValueAt(filaSeleccionada, 2).toString(), Float.parseFloat(tablaProductos.getValueAt(filaSeleccionada, 3).toString())));
-            formAnotarLineaComanda.setVisible(true);
             cerrar();
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN PRODUCTO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(IU_Productos_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(IU_Productos_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(IU_Productos_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(IU_Productos_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                IU_Productos_Dialog dialog = new IU_Productos_Dialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmar;

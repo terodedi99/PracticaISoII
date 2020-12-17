@@ -8,52 +8,20 @@ package Presentacion;
 import Dominio.Empleado;
 import Dominio.GestorLineasComanda;
 import Dominio.LineaComanda;
-import Dominio.Restaurante;
-import Persistencia.Agente;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-/**
- *
- * @author pikac
- */
-public class IU_Lineas_Empleado extends javax.swing.JFrame {
 
-    private final WindowListener exitListener;
+public class IU_Lineas_Empleado_Internal extends javax.swing.JInternalFrame {
+
     public static Empleado sesionEmpleado;
-    private static Empleado[] empleadosPrueba;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Lineas_Empleado
+     * Creates new form IU_Lineas_Empleado_Internal
      */
-    public IU_Lineas_Empleado() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                try {
-                    Agente.getAgente().desconectar();
-                } catch (Exception ex) {
-                    System.out.println("ERROR AL DESCONECTAR LA BASE DE DATOS");
-                }
-                cerrar();
-            }
-        };
-        
-        
-        empleadosPrueba = new Empleado[3];
-        empleadosPrueba[0] = new Empleado (1, "11111111A", "CAMARERO", "1", 926123456, Empleado.Rol.CAMARERO, new Restaurante(1));
-        empleadosPrueba[1] = new Empleado (4, "44444444D", "CAMARERO", "DE BARRA", 926123459, Empleado.Rol.CAMARERO_BARRA, new Restaurante(1));
-        empleadosPrueba[2] = new Empleado (5, "55555555E", "COCINERO", "1", 926123450, Empleado.Rol.COCINERO, new Restaurante(1));
-        
-        
-        //Se establece el empleado hasta que tengamos un sistema de login
-        sesionEmpleado = empleadosPrueba[0];
-        
+    public IU_Lineas_Empleado_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
@@ -61,17 +29,12 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("GESTIÓN DE PRODUCTOS PENDIENTES");
-        this.setLocationRelativeTo(null);
         
         //Ajustes de la tabla
         tablaLineasPendientes.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos();
     }
-    
-    private void cerrar() {
-        System.exit(0);
-    }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_COMANDA", "ID_LINEA_COMANDA", "ID_PRODUCTO", "DESCRIPCION_PRODUCTO", "TIPO_PRODUCTO", "CANTIDAD", "NOMBRE_MESA"};
         
@@ -123,7 +86,6 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
         }
     }
     
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,8 +101,6 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
         tablaLineasPendientes = new javax.swing.JTable();
         btnServir = new javax.swing.JButton();
         btnVerLineas = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lblTitulo.setText("PRODUCTOS POR SERVIR");
@@ -171,7 +131,7 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(352, 352, 352)
                 .addComponent(lblTitulo)
-                .addContainerGap(388, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +147,7 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGap(18, 39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnServir)
                     .addComponent(btnVerLineas))
@@ -210,10 +170,6 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVerLineasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerLineasActionPerformed
-        cargarDatos();
-    }//GEN-LAST:event_btnVerLineasActionPerformed
-
     private void btnServirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServirActionPerformed
         int filaSeleccionada = tablaLineasPendientes.getSelectedRow();
         if (filaSeleccionada >= 0) {
@@ -225,46 +181,16 @@ public class IU_Lineas_Empleado extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "NO SE PUEDE CAMBIAR EL ESTADO DE LA LINEA", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
-            }   
+            }
         } else {
             JOptionPane.showMessageDialog(this, "SELECCIONA UNA LINEA", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnServirActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Lineas_Empleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Lineas_Empleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Lineas_Empleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Lineas_Empleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnVerLineasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerLineasActionPerformed
+        cargarDatos();
+    }//GEN-LAST:event_btnVerLineasActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Lineas_Empleado().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnServir;

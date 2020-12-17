@@ -10,32 +10,21 @@ import Dominio.GestorComandas;
 import Dominio.LineaComanda;
 import Dominio.Producto;
 import Dominio.Servicio;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
 
-public class IU_Anotar_Comanda extends javax.swing.JFrame {
+public class IU_Anotar_Comanda_Dialog extends javax.swing.JDialog {
 
-    private final WindowListener exitListener;
-    private IU_Gestion_Comandas formComandas;
+    private IU_Gestion_Comandas_Internal formComandas;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Anotar_Comanda
+     * Creates new form IU_Anotar_Comanda_Dialog
      */
-    public IU_Anotar_Comanda() {
-        this.exitListener = new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formComandas.setVisible(true);
-                formComandas.cargarDatos();
-                cerrar();
-            }
-        };
+    public IU_Anotar_Comanda_Dialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
@@ -44,12 +33,12 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
         
         this.setTitle("ANOTAR COMANDA");
         this.setLocationRelativeTo(null); 
-        this.addWindowListener(exitListener);
         
         //Ajustes de la tabla
         tablaLineas.getTableHeader().setReorderingAllowed(false);
         cargarTabla();
     }
+
     
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_PRODUCTO", "DESCRIPCION", "TIPO PRODUCTO", "PRECIO", "CANTIDAD"};
@@ -74,8 +63,9 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
         cantidad.setMinWidth(80);
     }
     
-    public void setFormGestionComandas (IU_Gestion_Comandas formComandas) {
+    public void setFormGestionComandas (IU_Gestion_Comandas_Internal formComandas) {
         this.formComandas = formComandas;
+        formComandas.cargarDatos();
     }
     
     public void setDatosComanda (String idServicio, String turno, String mesa, String fecha, String comensales) {
@@ -90,7 +80,6 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
     private void cerrar() {
         this.dispose();
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,7 +111,7 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
         txtTotal = new javax.swing.JTextField();
         lblUnidadMonetaria = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tablaLineas.setModel(modelo);
         jScrollPane1.setViewportView(tablaLineas);
@@ -302,13 +291,76 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAnotarComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnotarComandaActionPerformed
+        if (tablaLineas.getRowCount() > 0) {
+            Comanda comanda = new Comanda (-1, Float.parseFloat(txtTotal.getText()), 0);
+            comanda.setServicio(new Servicio(Integer.parseInt(txtServicio.getText()), 0, ""));
+
+            ArrayList<LineaComanda> lineasComanda = new ArrayList<>();
+            for (int i = 0; i < tablaLineas.getRowCount(); i++) {
+                lineasComanda.add(new LineaComanda(-1, null, new Producto(Integer.parseInt(tablaLineas.getValueAt(i, 0).toString()),tablaLineas.getValueAt(i, 1).toString(), tablaLineas.getValueAt(i, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(i, 4).toString()), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString()), 0));
+            }
+
+            boolean exito = GestorComandas.insertarComanda(comanda, lineasComanda);
+            if (exito) {
+                GestorComandas.cambiarEstadoServicio(Integer.parseInt(txtServicio.getText()), "EN_ESPERA_DE_COMIDA");
+                GestorComandas.actualizarStock(lineasComanda);
+
+                this.setVisible(false);
+                formComandas.cargarDatos();
+                formComandas.setVisible(true);
+                cerrar();
+            } else {
+                JOptionPane.showMessageDialog(null, "ERROR AL AÑADIR LA COMANDA, CONTACTA CON SOPORTE", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "NO PUEDES INTRODUCIR UNA COMANDA SIN LINEAS", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAnotarComandaActionPerformed
+
     private void btnAñadirLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirLineaActionPerformed
-        this.setVisible(false);
-        IU_Anotar_Linea_Comanda anotarLineaComanda = new IU_Anotar_Linea_Comanda('A');
+        IU_Anotar_Linea_Comanda_Dialog anotarLineaComanda = new IU_Anotar_Linea_Comanda_Dialog(null, true, 'A');
         anotarLineaComanda.setFormAnotarComanda(this);
         anotarLineaComanda.setVisible(true);
     }//GEN-LAST:event_btnAñadirLineaActionPerformed
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int filaSeleccionada = tablaLineas.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            IU_Anotar_Linea_Comanda_Dialog anotarLineaComanda = new IU_Anotar_Linea_Comanda_Dialog(null, true, 'M');
+            anotarLineaComanda.setNumeroLinea(filaSeleccionada);
+            anotarLineaComanda.setFormAnotarComanda(this);
+            anotarLineaComanda.setInformacion(new Producto(Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada, 0).toString()), tablaLineas.getValueAt(filaSeleccionada, 1).toString(), tablaLineas.getValueAt(filaSeleccionada, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(filaSeleccionada, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada,4).toString()));
+            anotarLineaComanda.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA MODIFICAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaSeleccionada = tablaLineas.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            modelo.getDataVector().removeElementAt(filaSeleccionada);
+            modelo.fireTableDataChanged();
+
+            calcularTotal();
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA BORRAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    public void calcularTotal () {
+        float precio, total = 0.0f; int cantidad;
+        for (int i = 0; i < tablaLineas.getRowCount(); i++) {
+            precio = Float.parseFloat(tablaLineas.getValueAt(i, 3).toString());
+            cantidad = Integer.parseInt(tablaLineas.getValueAt(i, 4).toString());
+            
+            total = total + (precio * cantidad);
+        }
+        
+        txtTotal.setText(String.valueOf(total));
+    }
+    
     public void aniadirLineaComanda (LineaComanda linea) {
         modelo.fireTableDataChanged();
         
@@ -332,70 +384,48 @@ public class IU_Anotar_Comanda extends javax.swing.JFrame {
         calcularTotal();
     }
     
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int filaSeleccionada = tablaLineas.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            modelo.getDataVector().removeElementAt(filaSeleccionada);
-            modelo.fireTableDataChanged();
-            
-            calcularTotal();
-        } else {
-            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA BORRAR", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        int filaSeleccionada = tablaLineas.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            this.setVisible(false);
-            IU_Anotar_Linea_Comanda anotarLineaComanda = new IU_Anotar_Linea_Comanda('M');
-            anotarLineaComanda.setNumeroLinea(filaSeleccionada);
-            anotarLineaComanda.setFormAnotarComanda(this);
-            anotarLineaComanda.setVisible(true);
-            anotarLineaComanda.setInformacion(new Producto(Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada, 0).toString()), tablaLineas.getValueAt(filaSeleccionada, 1).toString(), tablaLineas.getValueAt(filaSeleccionada, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(filaSeleccionada, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(filaSeleccionada,4).toString()));
-        } else {
-            JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA LINEA PARA MODIFICAR", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }    
-    }//GEN-LAST:event_btnModificarActionPerformed
-
-    private void btnAnotarComandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnotarComandaActionPerformed
-        if (tablaLineas.getRowCount() > 0) {
-            Comanda comanda = new Comanda (-1, Float.parseFloat(txtTotal.getText()), 0);
-            comanda.setServicio(new Servicio(Integer.parseInt(txtServicio.getText()), 0, ""));
-            
-            ArrayList<LineaComanda> lineasComanda = new ArrayList<>();
-            for (int i = 0; i < tablaLineas.getRowCount(); i++) {
-                lineasComanda.add(new LineaComanda(-1, null, new Producto(Integer.parseInt(tablaLineas.getValueAt(i, 0).toString()),tablaLineas.getValueAt(i, 1).toString(), tablaLineas.getValueAt(i, 2).toString(), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString())), Integer.parseInt(tablaLineas.getValueAt(i, 4).toString()), Float.parseFloat(tablaLineas.getValueAt(i, 3).toString()), 0));
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
-            
-            boolean exito = GestorComandas.insertarComanda(comanda, lineasComanda);
-            if (exito) {
-                GestorComandas.cambiarEstadoServicio(Integer.parseInt(txtServicio.getText()), "EN_ESPERA_DE_COMIDA");
-                GestorComandas.actualizarStock(lineasComanda);
-                
-                this.setVisible(false);
-                formComandas.cargarDatos();
-                formComandas.setVisible(true);
-                cerrar();
-            } else {
-                JOptionPane.showMessageDialog(null, "ERROR AL AÑADIR LA COMANDA, CONTACTA CON SOPORTE", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "NO PUEDES INTRODUCIR UNA COMANDA SIN LINEAS", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(IU_Anotar_Comanda_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(IU_Anotar_Comanda_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(IU_Anotar_Comanda_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(IU_Anotar_Comanda_Dialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnAnotarComandaActionPerformed
+        //</editor-fold>
 
-    public void calcularTotal () {
-        float precio, total = 0.0f; int cantidad;
-        for (int i = 0; i < tablaLineas.getRowCount(); i++) {
-            precio = Float.parseFloat(tablaLineas.getValueAt(i, 3).toString());
-            cantidad = Integer.parseInt(tablaLineas.getValueAt(i, 4).toString());
-            
-            total = total + (precio * cantidad);
-        }
-        
-        txtTotal.setText(String.valueOf(total));
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                IU_Anotar_Comanda_Dialog dialog = new IU_Anotar_Comanda_Dialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnotarComanda;
     private javax.swing.JButton btnAñadirLinea;
