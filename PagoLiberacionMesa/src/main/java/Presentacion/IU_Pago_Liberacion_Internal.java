@@ -8,7 +8,6 @@ package Presentacion;
 import Dominio.Comanda;
 import Dominio.Empleado;
 import Dominio.GestorPagoComanda;
-import Dominio.Restaurante;
 import Dominio.Servicio;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,18 +16,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-public class IU_Pago_Liberacion extends javax.swing.JFrame {
+
+public class IU_Pago_Liberacion_Internal extends javax.swing.JInternalFrame {
 
     public static Empleado sesionEmpleado;
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Pago_Liberacion
+     * Creates new form IU_Pago_Liberacion_Internal
      */
-    public IU_Pago_Liberacion() {
-        //Se establece el empleado hasta que tengamos un sistema de login
-        sesionEmpleado = new Empleado (1, "11111111A", "CAMARERO", "1", 926123456, Empleado.Rol.CAMARERO, new Restaurante(1));
-        
+    public IU_Pago_Liberacion_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
@@ -36,13 +33,12 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("PAGO Y LIBERACIÓN DE MESAS");
-        this.setLocationRelativeTo(null);
         
         //Ajustes de la tabla
         tablaServicios.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); cargarDatos(); 
     }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"ID_SERVICIO", "FECHA", "TURNO", "MESA", "ESTADO", "NUM_COMENSALES", "ID_COMANDA", "TOTAL"};
         
@@ -102,7 +98,7 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
     public JTable getTablaServicios () {
         return this.tablaServicios;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -120,8 +116,6 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
         btnCuentaEntregada = new javax.swing.JButton();
         btnConfirmarPago = new javax.swing.JButton();
         btnMesaPreparada = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tablaServicios.setModel(modelo);
         jScrollPane1.setViewportView(tablaServicios);
@@ -196,7 +190,7 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCuentaEntregada)
                     .addComponent(btnMesaPreparada))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -223,14 +217,14 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("SERVIDOS")) {
                 Servicio s = new Servicio (Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()), 0, "");
                 s.setEstado(Servicio.Estado.ESPERANDO_LA_CUENTA);
-                Comanda c = new Comanda(s); 
+                Comanda c = new Comanda(s);
                 c.updateServicio();
             }
-            IU_Mostrar_Comanda formMostrarComanda = new IU_Mostrar_Comanda(this, true);
+            IU_Mostrar_Comanda formMostrarComanda = new IU_Mostrar_Comanda(null, true);
             formMostrarComanda.setDatosComanda(Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 6).toString()), Float.parseFloat(tablaServicios.getValueAt(filaSeleccionada, 7).toString()));
             formMostrarComanda.cargarDatos();
             formMostrarComanda.setVisible(true);
-            
+
             cargarDatos();
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -243,11 +237,11 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("ESPERANDO_LA_CUENTA")) {
                 Servicio s = new Servicio (Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()), 0, "");
                 s.setEstado(Servicio.Estado.PAGANDO);
-                Comanda c = new Comanda(s); 
+                Comanda c = new Comanda(s);
                 c.updateServicio();
 
                 cargarDatos();
-            }   
+            }
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -257,11 +251,11 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
         int filaSeleccionada = tablaServicios.getSelectedRow();
         if (filaSeleccionada >= 0) {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("PAGANDO")) {
-                IU_Metodo_Pago formMetodoPago = new IU_Metodo_Pago(this, true);
+                IU_Metodo_Pago formMetodoPago = new IU_Metodo_Pago(null, true);
                 formMetodoPago.setDatosComanda(Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 6).toString()), Float.parseFloat(tablaServicios.getValueAt(filaSeleccionada, 7).toString()));
                 formMetodoPago.setFormPagoLiberacion(this);
                 formMetodoPago.setVisible(true);
-            }   
+            }
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -273,50 +267,16 @@ public class IU_Pago_Liberacion extends javax.swing.JFrame {
             if (tablaServicios.getValueAt(filaSeleccionada, 4).equals("EN_PREPARACION")) {
                 Servicio s = new Servicio (Integer.parseInt(tablaServicios.getValueAt(filaSeleccionada, 0).toString()), 0, "");
                 s.setEstado(Servicio.Estado.FINALIZADA);
-                Comanda c = new Comanda(s); 
+                Comanda c = new Comanda(s);
                 c.updateServicio();
 
                 cargarDatos();
-            }   
+            }
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UN SERVICIO", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnMesaPreparadaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Pago_Liberacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Pago_Liberacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Pago_Liberacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Pago_Liberacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Pago_Liberacion().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirmarPago;

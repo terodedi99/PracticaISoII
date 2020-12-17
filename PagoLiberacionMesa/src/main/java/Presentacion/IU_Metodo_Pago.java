@@ -5,7 +5,6 @@
  */
 package Presentacion;
 
-import Dominio.Comanda;
 import Dominio.GestorPagoComanda;
 import Dominio.MetodoPago;
 import javax.swing.JOptionPane;
@@ -13,7 +12,7 @@ import javax.swing.JOptionPane;
 public class IU_Metodo_Pago extends javax.swing.JDialog {
 
     private MetodoPago[] metodos;
-    private IU_Pago_Liberacion formPagoLiberacion;
+    private IU_Pago_Liberacion_Internal formPagoLiberacion;
     
     /**
      * Creates new form IU_Metodo_Pago
@@ -33,7 +32,7 @@ public class IU_Metodo_Pago extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
     }
     
-    public void setFormPagoLiberacion (IU_Pago_Liberacion formPagoLiberacion) {
+    public void setFormPagoLiberacion (IU_Pago_Liberacion_Internal formPagoLiberacion) {
         this.formPagoLiberacion = formPagoLiberacion;
     }
 
