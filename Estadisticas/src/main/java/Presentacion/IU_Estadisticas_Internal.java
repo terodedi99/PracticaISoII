@@ -11,18 +11,15 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumn;
 
-/**
- *
- * @author pikac
- */
-public class IU_Estadisticas extends javax.swing.JFrame {
+
+public class IU_Estadisticas_Internal extends javax.swing.JInternalFrame {
 
     private ModeloTabla modelo;
     
     /**
-     * Creates new form IU_Estadisticas
+     * Creates new form IU_Estadisticas_Internal
      */
-    public IU_Estadisticas() {
+    public IU_Estadisticas_Internal() {
         //Establecemos el modelo de tabla
         modelo = new ModeloTabla();
         
@@ -30,13 +27,12 @@ public class IU_Estadisticas extends javax.swing.JFrame {
         
         //Se ponen las propiedades para la ventana
         this.setTitle("ESTADÍSTICAS");
-        this.setLocationRelativeTo(null);
         
         //Ajustes de la tabla
         tablaEstadisticas.getTableHeader().setReorderingAllowed(false);
         cargarTabla(); //cargarDatos(); 
     }
-    
+
     private void cargarTabla() {
         String nombreColumnas [] = {"NOMBRE", "TIEMPO_TOTAL"};
         
@@ -67,7 +63,7 @@ public class IU_Estadisticas extends javax.swing.JFrame {
             modelo.addRow(obj);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,8 +80,6 @@ public class IU_Estadisticas extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEstadisticas = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         cboTipoTiempo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         cboTipoTiempo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- TIPO INFORMACION --", "TIEMPO TOMA COMANDAS", "TIEMPO PREPARACION COMIDA", "TIEMPO ENTREGA NOTA", "TIEMPO PREPARACION MESA" }));
@@ -171,40 +165,6 @@ public class IU_Estadisticas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IU_Estadisticas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IU_Estadisticas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IU_Estadisticas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IU_Estadisticas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IU_Estadisticas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
