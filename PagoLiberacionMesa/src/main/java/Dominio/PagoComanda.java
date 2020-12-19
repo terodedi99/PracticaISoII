@@ -112,7 +112,7 @@ public class PagoComanda {
                 "    \"ISO2\".\"LINEAS_COMANDAS\"   \"A2\",\n" +
                 "    \"ISO2\".\"PRODUCTOS\"         \"A1\"\n" +
                 "WHERE\n" +
-                "    \"A2\".\"ID_COMANDA\" = 1\n" +
+                "    \"A2\".\"ID_COMANDA\" = " + idComanda + "\n" +
                 "    AND \"A2\".\"ID_PRODUCTO\" = \"A1\".\"ID_PRODUCTO\"\n" +
                 "ORDER BY\n" +
                 "    \"A2\".\"ID_LINEA_COMANDA\"";
