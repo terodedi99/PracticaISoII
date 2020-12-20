@@ -16,11 +16,11 @@ public class GestorServicio {
                     s.setEstado(Servicio.Estado.valueOf("RESERVADA"));
                     exito = s.update();
                 } else {
-                    JOptionPane.showMessageDialog(null, "EL COMENTARIO NO PUEDE SER VACIO Y NO SOBREPASAR LOS 120 CARACTERES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(null, "EL COMENTARIO NO PUEDE SER VACIO Y NO SOBREPASAR LOS 120 CARACTERES", "ERROR", JOptionPane.ERROR_MESSAGE);
                     exito = false;
                 }    
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR EL NUMERO DE COMENSALES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR EL NUMERO DE COMENSALES", "ERROR", JOptionPane.ERROR_MESSAGE);
                 exito = false;
             }
             
@@ -51,11 +51,11 @@ public class GestorServicio {
                     
                     exito = s.update() && s.insertServicioCamarero();
                 } else {
-                    JOptionPane.showMessageDialog(null, "EL COMENTARIO NO PUEDE SER VACIO Y NO SOBREPASAR LOS 120 CARACTERES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(null, "EL COMENTARIO NO PUEDE SER VACIO Y NO SOBREPASAR LOS 120 CARACTERES", "ERROR", JOptionPane.ERROR_MESSAGE);
                     exito = false;
                 }    
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR EL NUMERO DE COMENSALES", "ERROR", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR EL NUMERO DE COMENSALES", "ERROR", JOptionPane.ERROR_MESSAGE);
                 exito = false;
             }
             
